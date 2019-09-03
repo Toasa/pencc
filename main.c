@@ -1,5 +1,6 @@
-#include "util.h"
+#include <stdio.h>
 #include "token.h"
+#include "parse.h"
 #include "gen_x86.h"
 
 int main(int argc, char **argv) {
@@ -9,7 +10,8 @@ int main(int argc, char **argv) {
     }
 
     Token *token_head = tokenize(argv[1]);
-    gen_assembly(token_head);
+    Node *root_node = parse(token_head);
+    gen_assembly(root_node);
 
     return 0;
 }

@@ -1,1 +1,1 @@
-void gen_assembly(Token *t);
+void gen_assembly(Node *);

@@ -23,9 +23,24 @@ void skip() {
     }
 }
 
-Token *newToken(TokenKind kind, int val) {
+void printTokens(Token *t) {
+    char *tokenTypes[5] = {
+        "TK_INT",
+        "TK_ADD",
+        "TK_SUB",
+        "TK_MUL",
+        "TK_EOF",
+    };
+    while (t->type != TK_EOF) {
+        printf("type %s, val %d\n", tokenTypes[t->type], t->val);
+        t = t->next;
+    }
+    printf("type %s, val %d\n", tokenTypes[t->type], t->val);
+}
+
+Token *newToken(TokenType type, int val) {
     Token *t = malloc(sizeof(Token));
-    t->kind = kind;
+    t->type = type;
     t->val = val;
     return t;
 }
@@ -47,11 +62,14 @@ Token *tokenize(char *input_) {
         if (isDigit()) {
             new_token = newToken(TK_INT, num());
         } else {
-            if (*input++ == '+') {
+            if (*input == '+') {
                 new_token = (Token *)newToken(TK_ADD, 0);
-            } else {
+            } else if (*input == '-') {
                 new_token = newToken(TK_SUB, 0);
+            } else if (*input == '*') {
+                new_token = newToken(TK_MUL, 0);
             }
+            input++;
         }
         cur_token->next = new_token;
         cur_token = new_token;

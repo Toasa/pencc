@@ -1,14 +1,17 @@
-typedef enum enm {
-    TK_INT,
-    TK_ADD,
-    TK_SUB,
+typedef enum enm_tk {
+    TK_INT, // 46, 101, ...
+    TK_ADD, // +
+    TK_SUB, // -
+    TK_MUL, // *
     TK_EOF,
-} TokenKind;
+} TokenType;
 
 typedef struct Token {
-    TokenKind kind;
+    TokenType type;
     int val;
     struct Token *next;
 } Token;
 
-Token *tokenize(char *input);
+Token *tokenize(char *);
+
+void printTokens(Token *);
