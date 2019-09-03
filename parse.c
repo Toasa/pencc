@@ -28,9 +28,14 @@ Node *parseNum() {
 
 Node *parseMul() {
     Node *lhs = parseNum();
-    while (token->type == TK_MUL) {
-        token = token->next;
-        lhs = newNode(ND_MUL, 0, lhs, parseNum());
+    while (token->type == TK_MUL || token->type == TK_DIV) {
+        if (token->type == TK_MUL) {
+            token = token->next;
+            lhs = newNode(ND_MUL, 0, lhs, parseNum());
+        } else {
+            token = token->next;
+            lhs = newNode(ND_DIV, 0, lhs, parseNum());
+        }
     }
     return lhs;
 }

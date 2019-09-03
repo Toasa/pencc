@@ -24,11 +24,12 @@ void skip() {
 }
 
 void printTokens(Token *t) {
-    char *tokenTypes[5] = {
+    char *tokenTypes[6] = {
         "TK_INT",
         "TK_ADD",
         "TK_SUB",
         "TK_MUL",
+        "TK_DIV"
         "TK_EOF",
     };
     while (t->type != TK_EOF) {
@@ -68,6 +69,8 @@ Token *tokenize(char *input_) {
                 new_token = newToken(TK_SUB, 0);
             } else if (*input == '*') {
                 new_token = newToken(TK_MUL, 0);
+            } else if (*input == '/') {
+                new_token = newToken(TK_DIV, 0);
             }
             input++;
         }

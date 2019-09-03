@@ -13,14 +13,18 @@ void walkAST(Node *n) {
     if (n->type == ND_INT) {
         printf("        push %d\n", n->val);
     } else {
-        printf("        pop rdx\n");
+        printf("        pop rdi\n");
         printf("        pop rax\n");
         if (n->type == ND_ADD) {
-            printf("        add rax, rdx\n");
+            printf("        add rax, rdi\n");
         } else if (n->type == ND_SUB) {
-            printf("        sub rax, rdx\n");
+            printf("        sub rax, rdi\n");
         } else if (n->type == ND_MUL) {
-            printf("        mul rdx\n");
+            printf("        mul rdi\n");
+        } else if (n->type == ND_DIV) {
+            printf("        cqo\n");
+            // idivはdivの符号ありバージョン
+            printf("        idiv rdi\n");
         }
         printf("        push rax\n");
     }

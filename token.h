@@ -3,6 +3,7 @@ typedef enum enm_tk {
     TK_ADD, // +
     TK_SUB, // -
     TK_MUL, // *
+    TK_DIV, // /
     TK_EOF,
 } TokenType;
 

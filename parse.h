@@ -3,6 +3,7 @@ typedef enum enm_nd {
     ND_ADD, // +
     ND_SUB, // -
     ND_MUL, // *
+    ND_DIV, // /
 } NodeType;
 
 typedef struct Node {
