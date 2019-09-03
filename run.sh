@@ -1,8 +1,8 @@
 #!/bin/bash
 
 try() {
-    expected="$1"
-    input="$2"
+    input="$1"
+    expected="$2"
 
     ./main "$input" > tmp.s
     gcc -o tmp tmp.s
@@ -12,7 +12,7 @@ try() {
     if [ $actual = $expected ]; then
         echo "${input} => ${actual}"
     else
-        echo "{$expected} expected, but got {$actual}"
+        echo "${expected} expected, but got ${actual}"
         exit 1
     fi
 }
@@ -20,3 +20,9 @@ try() {
 try 1 1
 try 100 100
 try 255 255
+
+try "3+4" 7
+try "100-10" 90
+try "1+20+3-4+30-1" 49
+
+echo OK
