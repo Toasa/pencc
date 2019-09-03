@@ -1,2 +1,4 @@
 main
 tmp*
+.DS_Store
+a.out
