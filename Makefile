@@ -1,5 +1,5 @@
-run: main run.sh
-	gcc -o main main.c
+run: run.sh main.c token.c
+	gcc -o main main.c token.c
 	./run.sh
 
 clean:
