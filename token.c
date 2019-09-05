@@ -2,20 +2,20 @@
 #include "token.h"
 
 char *tokenTypes[14] = {
-    "TK_INT",
-    "TK_ADD",
-    "TK_SUB",
-    "TK_MUL",
-    "TK_DIV",
-    "TK_LPARENT",
-    "TK_RPARENT",
-    "TK_EQ",
-    "TK_NQ",
-    "TK_LT",
-    "TK_LE",
-    "TK_GT",
-    "TK_GE",
-    "TK_EOF",
+    [TK_INT] = "TK_INT",
+    [TK_ADD] = "TK_ADD",
+    [TK_SUB] = "TK_SUB",
+    [TK_MUL] = "TK_MUL",
+    [TK_DIV] = "TK_DIV",
+    [TK_LPARENT] = "TK_LPARENT",
+    [TK_RPARENT] = "TK_RPARENT",
+    [TK_EQ] = "TK_EQ",
+    [TK_NQ] = "TK_NQ",
+    [TK_LT] = "TK_LT",
+    [TK_LE] = "TK_LE",
+    [TK_GT] = "TK_GT",
+    [TK_GE] = "TK_GE",
+    [TK_EOF] = "TK_EOF",
 };
 
 char *input;
