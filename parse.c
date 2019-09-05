@@ -4,7 +4,7 @@
 
 Token *token;
 
-Node *parseAdd();
+Node *parseEqual();
 
 Node *newNode(NodeType type, int val, Node *lhs, Node *rhs) {
     Node *node = malloc(sizeof(Node));
@@ -53,7 +53,7 @@ Node *parseNum() {
         n = newIntNode(val);
     } else {
         eatToken(TK_LPARENT);
-        n = parseAdd();
+        n = parseEqual();
         eatToken(TK_RPARENT);
     }
     
@@ -102,8 +102,44 @@ Node *parseAdd() {
     return lhs;
 }
 
+Node *parseComp() {
+    Node *lhs = parseAdd();
+    while (curTokenTypeIs(TK_LT) || curTokenTypeIs(TK_LE) ||
+           curTokenTypeIs(TK_GT) || curTokenTypeIs(TK_GE))
+    {
+        if (curTokenTypeIs(TK_LT)) {
+            nextToken();
+            lhs = newNode(ND_LT, 0, lhs, parseAdd());
+        } else if (curTokenTypeIs(TK_LE)) {
+            nextToken();
+            lhs = newNode(ND_LE, 0, lhs, parseAdd());
+        } else if (curTokenTypeIs(TK_GT)) {
+            nextToken();
+            lhs = newNode(ND_LT, 0, parseAdd(), lhs);
+        } else if (curTokenTypeIs(TK_GE)) {
+            nextToken();
+            lhs = newNode(ND_LE, 0, parseAdd(), lhs);
+        }
+    }
+    return lhs;
+}
+
+Node *parseEqual() {
+    Node *lhs = parseComp();
+    while (curTokenTypeIs(TK_EQ) || curTokenTypeIs(TK_NQ)) {
+        if (curTokenTypeIs(TK_EQ)) {
+            nextToken();
+            lhs = newNode(ND_EQ, 0, lhs, parseComp());
+        } else {
+            nextToken();
+            lhs = newNode(ND_NQ, 0, lhs, parseComp());
+        }
+    }
+    return lhs;
+}
+
 Node *parse(Token *token_) {
     token = token_;
-    Node *node = parseAdd();
+    Node *node = parseEqual();
     return node;
 }
