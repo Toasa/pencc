@@ -5,4 +5,4 @@
 
 void error(char *err_msg, ...);
 
-void assert(bool cond, char *err_msg);
+void assert(bool cond, char *err_msg, ...);

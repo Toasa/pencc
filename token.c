@@ -1,20 +1,31 @@
 #include "util.h"
 #include "token.h"
 
+char *tokenTypes[8] = {
+    "TK_INT",
+    "TK_ADD",
+    "TK_SUB",
+    "TK_MUL",
+    "TK_DIV",
+    "TK_LPARENT",
+    "TK_RPARENT",
+    "TK_EOF",
+};
+
 char *input;
+
+bool isDigit() {
+    if (('0' <= *input) && (*input <= '9'))
+        return true;
+    else 
+        return false;
+}
 
 int num() {
     int n = *input++ - '0';
     while (isDigit())
         n = 10 * n + (*input++ - '0');
     return n;
-}
-
-int isDigit() {
-    if ('0' <= *input && *input <= '9')
-        return 1;
-    else 
-        return 0;
 }
 
 void skip() {
@@ -24,19 +35,11 @@ void skip() {
 }
 
 void printTokens(Token *t) {
-    char *tokenTypes[6] = {
-        "TK_INT",
-        "TK_ADD",
-        "TK_SUB",
-        "TK_MUL",
-        "TK_DIV"
-        "TK_EOF",
-    };
     while (t->type != TK_EOF) {
-        printf("type %s, val %d\n", tokenTypes[t->type], t->val);
+        printf("type: %s, val: %d\n", tokenTypes[t->type], t->val);
         t = t->next;
     }
-    printf("type %s, val %d\n", tokenTypes[t->type], t->val);
+    printf("type: %s, val: %d\n", tokenTypes[t->type], t->val);
 }
 
 Token *newToken(TokenType type, int val) {
@@ -50,13 +53,13 @@ Token *tokenize(char *input_) {
     input = input_;
     skip();
 
+    // 先頭の番兵
     Token *head_token = malloc(sizeof(Token));
     Token *cur_token = malloc(sizeof(Token));
     Token *new_token = malloc(sizeof(Token));
     Token *tail_token = malloc(sizeof(Token));
 
-    head_token = newToken(TK_INT, num());
-    cur_token = head_token;
+    head_token = cur_token;
 
     while (*input) {
         skip();
@@ -71,6 +74,10 @@ Token *tokenize(char *input_) {
                 new_token = newToken(TK_MUL, 0);
             } else if (*input == '/') {
                 new_token = newToken(TK_DIV, 0);
+            } else if (*input == '(') {
+                new_token = newToken(TK_LPARENT, 0);
+            } else if (*input == ')') {
+                new_token = newToken(TK_RPARENT, 0);
             }
             input++;
         }
@@ -81,5 +88,5 @@ Token *tokenize(char *input_) {
     tail_token = newToken(TK_EOF, 0);
     cur_token->next = tail_token;
 
-    return head_token;
+    return head_token->next;
 }

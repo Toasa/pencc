@@ -5,6 +5,7 @@ void error(char *err_msg, ...) {
     va_start(ap, err_msg);
     vfprintf(stderr, err_msg, ap);
     fprintf(stderr, "\n");
+    va_end(ap);
     exit(1);
 }
 
