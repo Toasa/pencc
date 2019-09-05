@@ -15,6 +15,10 @@ Node *newNode(NodeType type, int val, Node *lhs, Node *rhs) {
     return node;
 }
 
+Node *newIntNode(int val) {
+    return newNode(ND_INT, val, NULL, NULL);
+}
+
 bool curTokenTypeIs(TokenType type) {
     return token->type == type;
 }
@@ -46,7 +50,7 @@ Node *parseNum() {
     if (curTokenTypeIs(TK_INT)) {
         int val = token->val;
         nextToken();
-        n = newNode(ND_INT, val, NULL, NULL);
+        n = newIntNode(val);
     } else {
         eatToken(TK_LPARENT);
         n = parseAdd();
@@ -56,15 +60,29 @@ Node *parseNum() {
     return n;
 }
 
+Node *parseUnary() {
+    if (curTokenTypeIs(TK_SUB)) {
+        eatToken(TK_SUB);
+        Node *zero = newIntNode(0);
+        Node *n = newNode(ND_SUB, 0, zero, parseNum());
+        return n;
+    }
+ 
+    if (curTokenTypeIs(TK_ADD)) {
+        nextToken();
+    }
+    return parseNum();
+}
+
 Node *parseMul() {
-    Node *lhs = parseNum();
+    Node *lhs = parseUnary();
     while (token->type == TK_MUL || token->type == TK_DIV) {
         if (token->type == TK_MUL) {
             nextToken();
-            lhs = newNode(ND_MUL, 0, lhs, parseNum());
+            lhs = newNode(ND_MUL, 0, lhs, parseUnary());
         } else {
             nextToken();
-            lhs = newNode(ND_DIV, 0, lhs, parseNum());
+            lhs = newNode(ND_DIV, 0, lhs, parseUnary());
         }
     }
     return lhs;
