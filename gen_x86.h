@@ -1,1 +1,1 @@
-void genAssembly(Node **);
+void genAssembly(ParsedData ps);

@@ -46,7 +46,7 @@ int num() {
     return n;
 }
 
-int ident() {
+int identLength() {
     int i = 1;
     while (isChar(*(input+i))) {
         i++;
@@ -71,10 +71,11 @@ void readIdentName(char *ident_buf, int len) {
     ident_buf[i] = '\0';
 }
 
+// debug用
 void printTokens(Token *t) {
     while (t->type != TK_EOF) {
         if (t->type == TK_IDENT) {
-            printf("type: %s, name: %s\n", tokenTypes[t->type], t->name);
+            printf("type: %s, name: %s\n", tokenTypes[t->type], t->ident);
         } else if (t->type == TK_INT) {
             printf("type: %s, val: %d\n", tokenTypes[t->type], t->val);
         } else {
@@ -92,10 +93,11 @@ Token *newToken(TokenType type, int val) {
     return t;
 }
 
-Token *newIdentToken(char *name) {
+Token *newIdentToken(char *name, int len) {
     Token *t = malloc(sizeof(Token));
     t->type = TK_IDENT;
-    t->name = name;
+    t->ident = name;
+    t->identLen = len;
 }
 
 Token *tokenize(char *input_) {
@@ -115,7 +117,7 @@ Token *tokenize(char *input_) {
         if (isDigit()) {
             new_token = newToken(TK_INT, num());
         } else if (isChar(*input)) {
-            int len = ident();
+            int len = identLength();
             
             // 変数名の長さは最大50文字（末尾にNULLを代入する）
             char *ident_buf = malloc(sizeof(char) * len + 1);
@@ -123,7 +125,7 @@ Token *tokenize(char *input_) {
 
             input += len;
 
-            new_token = newIdentToken(ident_buf);
+            new_token = newIdentToken(ident_buf, len);
         } else {
             if (*input == '+') {
                 new_token = (Token *)newToken(TK_ADD, 0);

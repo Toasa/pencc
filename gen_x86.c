@@ -10,16 +10,13 @@ int calcOffset(char c) {
 }
 
 void genIdent(Node *n) {
-    char ident = n->ident;
-    int offset = calcOffset(ident);
-    printf("        mov rax, [rbp - %d]\n", offset);
+    printf("        mov rax, [rbp - %d]\n", n->offset);
     printf("        push rax\n");
 }
 
 void genAssign(Node *n) {
     genExpr(n->rhs);
-    char ident = n->lhs->ident;
-    int offset = calcOffset(ident);
+    int offset = n->lhs->offset;
     printf("        pop rax\n");
     printf("        mov [rbp - %d], rax\n", offset);
     printf("        push rax\n");
@@ -73,14 +70,14 @@ void genExpr(Node *n) {
     }
 }
 
-void gen(Node **stmts) {
+void gen(ParsedData pd) {
     printf("        push rbp\n");
     printf("        mov rbp, rsp\n");
-    printf("        sub rsp, %d\n", 208);
+    printf("        sub rsp, %d\n", pd.identNum * 8);
 
     int i;
-    for (i = 0; stmts[i]; i++) {
-        Node *n = stmts[i];        
+    for (i = 0; pd.stmts[i]; i++) {
+        Node *n = pd.stmts[i];        
         genExpr(n);
 
         printf("        pop rax\n");
@@ -91,12 +88,12 @@ void gen(Node **stmts) {
     printf("        ret\n");
 }
 
-void genAssembly(Node **stmts) {
+void genAssembly(ParsedData pd) {
     printf(".intel_syntax noprefix\n");
     printf(".global main\n\n");
     printf("main:\n");
 
-    gen(stmts);
+    gen(pd);
 
     printf("        ret\n");
 }

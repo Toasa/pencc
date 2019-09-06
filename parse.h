@@ -11,7 +11,7 @@ typedef enum enm_nd {
     ND_LT,     // <
     ND_LE,     // <=
 
-    ND_IDENT,  // a, b, ...
+    ND_IDENT,  // a, foo, ...
 
     ND_ASSIGN, // =
 } NodeType;
@@ -20,11 +20,18 @@ typedef struct Node {
     NodeType type;
 
     int val; // typeがND_INTのときに使用
-    char ident; // typeがND_ASSIGNのときに使用
+    // char ident; // typeがND_ASSIGNのときに使用
     int offset; // typeがND_ASSIGNのときに使用
     
     struct Node *lhs;
     struct Node *rhs;
 } Node;
 
-Node **parse(Token *);
+typedef struct ps {
+    Node **stmts;
+    int identNum;
+} ParsedData;
+
+void printIdents();
+
+ParsedData parse(Token *);

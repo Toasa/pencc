@@ -3,11 +3,24 @@
 #include "parse.h"
 
 Token *token;
+StringChain *strings;
 
 // parseProgram()で各statementをparseし、
 // parse結果として得られる各statement nodeを
 // stmtsの要素とし、格納する
 Node *stmts[100];
+
+// debug用
+void printIdents() {
+    StringChain *sc = strings->next;
+    int i = 0;
+    while (sc) {
+        printf("IDENT: %s, OFFSET: %d\n", sc->str.str, (i + 1) * 8);
+
+        sc = sc->next;
+        i++;
+    }
+}
 
 Node *parseEqual();
 
@@ -24,9 +37,10 @@ Node *newIntNode(int val) {
     return newNode(ND_INT, val, NULL, NULL);
 }
 
-Node *newIdentNode(int offset) {
+Node *newIdentNode(char *ident, int ident_len) {
     Node *n = newNode(ND_IDENT, 0, NULL, NULL);
-    n->offset = offset;
+    String str = newString(ident, ident_len);
+    n->offset = getStringOffset(strings, str);
     return n;
 }
 
@@ -67,9 +81,10 @@ Node *parseNum() {
         n = parseEqual();
         eatToken(TK_RPARENT);
     } else {
-        char c = token->val;
+        char *ident = token->ident;
+        int ident_len = token->identLen;
         nextToken();
-        n = newIdentNode(c);
+        n = newIdentNode(ident, ident_len);
     }
     
     return n;
@@ -179,9 +194,14 @@ void parseProgram() {
     }
     stmts[i] = NULL;
 }
-
-Node **parse(Token *token_) {
+ 
+ParsedData parse(Token *token_) {
     token = token_;
+    strings = initStringChain();
     parseProgram();
-    return stmts;
+
+    ParsedData pd;
+    pd.stmts = stmts;
+    pd.identNum = strings->total;
+    return pd;
 }

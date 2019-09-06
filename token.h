@@ -30,7 +30,8 @@ char *tokenTypes[17];
 typedef struct Token {
     TokenType type;
     int val;            // TokenTypeがTK_INTの場合、その値を表す、その他のTokenTypeでは0に固定
-    char *name;        // TokenTypeがTK_IDENTの場合、その識別子を表す
+    char *ident;        // TokenTypeがTK_IDENTの場合、その識別子を表す
+    int identLen;       // TokenTypeがTK_IDENTの場合、その識別子の長さを表す
     struct Token *next;
 } Token;
 

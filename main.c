@@ -8,13 +8,8 @@
 char *input;
 
 void setInput(int len, char *src) {
-    input = malloc(sizeof(char) * len);
-
-    int i;
-    for (i = 0; i < len; i++) {
-        input[i] = src[i];
-    }
-    input[len] = '\0';
+    input = malloc(sizeof(char) * len + 10);
+    strcpy(input, src);
 }
 
 int main(int argc, char **argv) {
@@ -25,11 +20,13 @@ int main(int argc, char **argv) {
 
     int input_len = strlen(argv[1]);
     setInput(input_len, argv[1]);
-
+    
     Token *token_head = tokenize(input);
-    printTokens(token_head);
-    // Node **stmts = parse(token_head);
-    // genAssembly(stmts);
+
+    // printTokens(token_head);
+
+    ParsedData ps = parse(token_head);
+    genAssembly(ps);
 
     return 0;
 }
