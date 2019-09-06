@@ -3,15 +3,42 @@
 #include "parse.h"
 #include "gen_x86.h"
 
-void walkAST(Node *n) {
+void genExpr(Node *n);
+
+int calcOffset(char c) {
+    return (c - 'a' + 1) * 8;
+}
+
+void genIdent(Node *n) {
+    char ident = n->ident;
+    int offset = calcOffset(ident);
+    printf("        mov rax, [rbp - %d]\n", offset);
+    printf("        push rax\n");
+}
+
+void genAssign(Node *n) {
+    genExpr(n->rhs);
+    char ident = n->lhs->ident;
+    int offset = calcOffset(ident);
+    printf("        pop rax\n");
+    printf("        mov [rbp - %d], rax\n", offset);
+    printf("        push rax\n");
+}
+
+void genExpr(Node *n) {
     if (n->lhs) { 
-        walkAST(n->lhs);
+        genExpr(n->lhs);
     }
     if (n->rhs) {
-        walkAST(n->rhs);
+        genExpr(n->rhs);
     }
+
     if (n->type == ND_INT) {
         printf("        push %d\n", n->val);
+    } else if (n->type == ND_IDENT) {
+        genIdent(n);
+    } else if (n->type == ND_ASSIGN) {
+        genAssign(n);
     } else {
         printf("        pop rdi\n");
         printf("        pop rax\n");
@@ -46,13 +73,30 @@ void walkAST(Node *n) {
     }
 }
 
-void gen_assembly(Node *n) {
+void gen(Node **stmts) {
+    printf("        push rbp\n");
+    printf("        mov rbp, rsp\n");
+    printf("        sub rsp, %d\n", 208);
+
+    int i;
+    for (i = 0; stmts[i]; i++) {
+        Node *n = stmts[i];        
+        genExpr(n);
+
+        printf("        pop rax\n");
+    }
+
+    printf("        mov rsp, rbp\n");
+    printf("        pop rbp\n");
+    printf("        ret\n");
+}
+
+void genAssembly(Node **stmts) {
     printf(".intel_syntax noprefix\n");
     printf(".global main\n\n");
     printf("main:\n");
 
-    walkAST(n);
+    gen(stmts);
 
-    printf("        pop rax\n");
     printf("        ret\n");
 }

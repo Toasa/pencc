@@ -1,21 +1,24 @@
 #include "util.h"
 #include "token.h"
 
-char *tokenTypes[14] = {
-    [TK_INT] = "TK_INT",
-    [TK_ADD] = "TK_ADD",
-    [TK_SUB] = "TK_SUB",
-    [TK_MUL] = "TK_MUL",
-    [TK_DIV] = "TK_DIV",
-    [TK_LPARENT] = "TK_LPARENT",
-    [TK_RPARENT] = "TK_RPARENT",
-    [TK_EQ] = "TK_EQ",
-    [TK_NQ] = "TK_NQ",
-    [TK_LT] = "TK_LT",
-    [TK_LE] = "TK_LE",
-    [TK_GT] = "TK_GT",
-    [TK_GE] = "TK_GE",
-    [TK_EOF] = "TK_EOF",
+char *tokenTypes[17] = {
+    [TK_INT]       = "TK_INT",
+    [TK_ADD]       = "TK_ADD",
+    [TK_SUB]       = "TK_SUB",
+    [TK_MUL]       = "TK_MUL",
+    [TK_DIV]       = "TK_DIV",
+    [TK_LPARENT]   = "TK_LPARENT",
+    [TK_RPARENT]   = "TK_RPARENT",
+    [TK_EQ]        = "TK_EQ",
+    [TK_NQ]        = "TK_NQ",
+    [TK_LT]        = "TK_LT",
+    [TK_LE]        = "TK_LE",
+    [TK_GT]        = "TK_GT",
+    [TK_GE]        = "TK_GE",
+    [TK_IDENT]     = "TK_IDENT",
+    [TK_ASSIGN]    = "TK_ASSIGN",
+    [TK_SEMICOLON] = "TK_SEMICOLON",
+    [TK_EOF]       = "TK_EOF",
 };
 
 char *input;
@@ -25,6 +28,15 @@ bool isDigit() {
         return true;
     else 
         return false;
+}
+
+bool isChar() {
+    if (('a' <= *input) && (*input <= 'z') ||
+        ('A' <= *input) && (*input <= 'Z'))
+    {
+        return true;
+    }
+    return false;
 }
 
 int num() {
@@ -71,6 +83,8 @@ Token *tokenize(char *input_) {
         skip();
         if (isDigit()) {
             new_token = newToken(TK_INT, num());
+        } else if (isChar()) {
+            new_token = newToken(TK_IDENT, *input++);
         } else {
             if (*input == '+') {
                 new_token = (Token *)newToken(TK_ADD, 0);
@@ -102,12 +116,16 @@ Token *tokenize(char *input_) {
                 if (*(input+1) == '=') {
                     new_token = newToken(TK_EQ, 0);
                     input++;
+                } else {
+                    new_token = newToken(TK_ASSIGN, 0);                    
                 }
             } else if (*input == '!') {
                 if (*(input+1) == '=') {
                     new_token = newToken(TK_NQ, 0);
                     input++;
                 }
+            } else if (*input == ';') {
+                new_token = newToken(TK_SEMICOLON, 0);
             }
             input++;
         }

@@ -4,6 +4,11 @@
 
 Token *token;
 
+// parseProgram()で各statementをparseし、
+// parse結果として得られる各statement nodeを
+// stmtsの要素とし、格納する
+Node *stmts[100];
+
 Node *parseEqual();
 
 Node *newNode(NodeType type, int val, Node *lhs, Node *rhs) {
@@ -17,6 +22,12 @@ Node *newNode(NodeType type, int val, Node *lhs, Node *rhs) {
 
 Node *newIntNode(int val) {
     return newNode(ND_INT, val, NULL, NULL);
+}
+
+Node *newIdentNode(char c) {
+    Node *n = newNode(ND_IDENT, 0, NULL, NULL);
+    n->ident = c;
+    return n;
 }
 
 bool curTokenTypeIs(TokenType type) {
@@ -42,8 +53,8 @@ void eatToken(TokenType type) {
 }
 
 Node *parseNum() {
-    if (token->type != TK_INT && token->type != TK_LPARENT) {
-        error("expected TK_INT or TK_LPARENT, but got %s", tokenTypes[token->type]);
+    if (!curTokenTypeIs(TK_INT) && !curTokenTypeIs(TK_LPARENT) && !curTokenTypeIs(TK_IDENT)) {
+        error("expected TK_INT or TK_LPARENT or TK_IDENT, but got %s", tokenTypes[token->type]);
     }
 
     Node *n;
@@ -51,10 +62,14 @@ Node *parseNum() {
         int val = token->val;
         nextToken();
         n = newIntNode(val);
-    } else {
+    } else if (curTokenTypeIs(TK_LPARENT)) {
         eatToken(TK_LPARENT);
         n = parseEqual();
         eatToken(TK_RPARENT);
+    } else {
+        char c = token->val;
+        nextToken();
+        n = newIdentNode(c);
     }
     
     return n;
@@ -138,8 +153,35 @@ Node *parseEqual() {
     return lhs;
 }
 
-Node *parse(Token *token_) {
+Node *parseAssign() {
+    Node *lhs = parseEqual();
+    if (curTokenTypeIs(TK_ASSIGN)) {
+        nextToken();
+        lhs = newNode(ND_ASSIGN, 0, lhs, parseAssign());
+    }
+    return lhs;
+}
+
+Node *parseExpression() {
+    return parseAssign();
+}
+
+Node *parseStatement() {
+    Node *n = parseExpression();
+    eatToken(TK_SEMICOLON);
+    return n;
+}
+
+void parseProgram() {
+    int i = 0;
+    while (!curTokenTypeIs(TK_EOF)) {
+        stmts[i++]  = parseStatement();
+    }
+    stmts[i] = NULL;
+}
+
+Node **parse(Token *token_) {
     token = token_;
-    Node *node = parseEqual();
-    return node;
+    parseProgram();
+    return stmts;
 }

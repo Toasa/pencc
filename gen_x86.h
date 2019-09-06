@@ -1,1 +1,1 @@
-void gen_assembly(Node *);
+void genAssembly(Node **);
