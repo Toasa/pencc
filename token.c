@@ -116,9 +116,11 @@ Token *tokenize(char *input_) {
             new_token = newToken(TK_INT, num());
         } else if (isChar(*input)) {
             int len = ident();
+            
             // 変数名の長さは最大50文字（末尾にNULLを代入する）
-            char *ident_buf = malloc(sizeof(char) * 51);
+            char *ident_buf = malloc(sizeof(char) * len + 1);
             readIdentName(ident_buf, len);
+
             input += len;
 
             new_token = newIdentToken(ident_buf);
