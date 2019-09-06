@@ -21,6 +21,7 @@ typedef struct Node {
 
     int val; // typeがND_INTのときに使用
     char ident; // typeがND_ASSIGNのときに使用
+    int offset; // typeがND_ASSIGNのときに使用
     
     struct Node *lhs;
     struct Node *rhs;

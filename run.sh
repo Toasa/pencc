@@ -64,4 +64,6 @@ try "a = 10; b = 10; a * b == 100;" 1
 try "a = 1; f  =12;     k = 10; a + f * k;" 121
 try "a = b = 10; a * b == 100;" 1
 
+try "abc = 2; def=30; def / abc;"
+
 echo OK

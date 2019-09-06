@@ -10,8 +10,9 @@ int main(int argc, char **argv) {
     }
 
     Token *token_head = tokenize(argv[1]);
-    Node **stmts = parse(token_head);
-    genAssembly(stmts);
+    printTokens(token_head);
+    // Node **stmts = parse(token_head);
+    // genAssembly(stmts);
 
     return 0;
 }

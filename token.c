@@ -30,9 +30,9 @@ bool isDigit() {
         return false;
 }
 
-bool isChar() {
-    if (('a' <= *input) && (*input <= 'z') ||
-        ('A' <= *input) && (*input <= 'Z'))
+bool isChar(char c) {
+    if (('a' <= c) && (c <= 'z') ||
+        ('A' <= c) && (c <= 'Z'))
     {
         return true;
     }
@@ -46,15 +46,40 @@ int num() {
     return n;
 }
 
+int ident() {
+    int i = 1;
+    while (isChar(*(input+i))) {
+        i++;
+    }
+    return i;
+}
+
 void skip() {
     while (*input == ' ') {
         input++;
     }
 }
 
+void readIdentName(char *ident_buf, int len) {
+    if (len >= 50) {
+        error("Too long identifier name :(");
+    }
+    int i;
+    for (i = 0; i < len; i++) {
+        ident_buf[i] = input[i];
+    }
+    ident_buf[i] = '\0';
+}
+
 void printTokens(Token *t) {
     while (t->type != TK_EOF) {
-        printf("type: %s, val: %d\n", tokenTypes[t->type], t->val);
+        if (t->type == TK_IDENT) {
+            printf("type: %s, name: %s\n", tokenTypes[t->type], t->name);
+        } else if (t->type == TK_INT) {
+            printf("type: %s, val: %d\n", tokenTypes[t->type], t->val);
+        } else {
+            printf("type: %s\n", tokenTypes[t->type]);
+        }
         t = t->next;
     }
     printf("type: %s, val: %d\n", tokenTypes[t->type], t->val);
@@ -65,6 +90,12 @@ Token *newToken(TokenType type, int val) {
     t->type = type;
     t->val = val;
     return t;
+}
+
+Token *newIdentToken(char *name) {
+    Token *t = malloc(sizeof(Token));
+    t->type = TK_IDENT;
+    t->name = name;
 }
 
 Token *tokenize(char *input_) {
@@ -83,8 +114,14 @@ Token *tokenize(char *input_) {
         skip();
         if (isDigit()) {
             new_token = newToken(TK_INT, num());
-        } else if (isChar()) {
-            new_token = newToken(TK_IDENT, *input++);
+        } else if (isChar(*input)) {
+            int len = ident();
+            // 変数名の長さは最大50文字（末尾にNULLを代入する）
+            char *ident_buf = malloc(sizeof(char) * 51);
+            readIdentName(ident_buf, len);
+            input += len;
+
+            new_token = newIdentToken(ident_buf);
         } else {
             if (*input == '+') {
                 new_token = (Token *)newToken(TK_ADD, 0);

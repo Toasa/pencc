@@ -24,9 +24,9 @@ Node *newIntNode(int val) {
     return newNode(ND_INT, val, NULL, NULL);
 }
 
-Node *newIdentNode(char c) {
+Node *newIdentNode(int offset) {
     Node *n = newNode(ND_IDENT, 0, NULL, NULL);
-    n->ident = c;
+    n->offset = offset;
     return n;
 }
 
