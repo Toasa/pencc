@@ -96,25 +96,26 @@ if (1) {
 }
 """ 46
 
-# try """
-# a = 40;
-# if (a / 2 == 20) return 5; return 6;
-# """ 5
+try """
+a = 40;
+if (a / 2 == 20) return 5; return 6;
+""" 5
 
-# try """
-# a = 40;
-# if (a / 2 == 21) return 5; return 6;
-# """ 6
+try """
+a = 40;
+if (a / 2 == 21) return 5; return 6;
+""" 6
 
-# try """
-# a = 10;
-# if (a == 21)
-# return 5;
-# else
-# return 6;
-# x = 7;
-# return x;
-# """ 6
+try """
+a = 10;
+if (a == 21) {
+    return 5;
+} else {
+    return 6;
+    x = 7;
+    return x;
+}
+""" 6
 
 # try """
 # i = 2;
