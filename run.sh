@@ -78,6 +78,18 @@ a = 5;
 return a + 10;
 """ 15
 
+try """
+i = 1;
+i = i + 1;
+i = i + 1;
+i = i + 1;
+i = i + 1;
+i = i + 1;
+i = i + 1;
+i = i + 1;
+return i;
+""" 8
+
 try "if (1) return 46;" 46
 
 try """

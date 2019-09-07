@@ -42,7 +42,7 @@ bool isChar(char c) {
     return false;
 }
 
-TokenType matchKeyword(char *name, int len) {
+TokenType matchKeyword(char *name) {
     if (strcmp(name, "return") == 0) {
         return TK_RETURN;
     } else if (strcmp(name, "else") == 0) {
@@ -139,7 +139,7 @@ Token *tokenize(char *input_) {
 
             // マッチすれば、keywordのTokenTypeを返す
             // そうでなければ、-1を返す
-            TokenType tt = matchKeyword(ident_buf, len);
+            TokenType tt = matchKeyword(ident_buf);
             if ((int)tt >= 0) {                
                 new_token = newToken(tt, 0);
             } else {                
