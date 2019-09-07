@@ -67,4 +67,7 @@ try "a = b = 10; a * b == 100;" 1
 try "abc = 2; def=30; def / abc;" 15
 try "foo = bar = 12; foo * bar;" 144;
 
+try "a = 5; b = 30; return a * b;"
+try "return 100; return 200;"
+
 echo OK

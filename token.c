@@ -1,7 +1,7 @@
 #include "util.h"
 #include "token.h"
 
-char *tokenTypes[17] = {
+char *tokenTypes[18] = {
     [TK_INT]       = "TK_INT",
     [TK_ADD]       = "TK_ADD",
     [TK_SUB]       = "TK_SUB",
@@ -17,6 +17,7 @@ char *tokenTypes[17] = {
     [TK_GE]        = "TK_GE",
     [TK_IDENT]     = "TK_IDENT",
     [TK_ASSIGN]    = "TK_ASSIGN",
+    [TK_RETURN]    = "TK_RETURN",
     [TK_SEMICOLON] = "TK_SEMICOLON",
     [TK_EOF]       = "TK_EOF",
 };
@@ -37,6 +38,13 @@ bool isChar(char c) {
         return true;
     }
     return false;
+}
+
+TokenType matchKeyword(char *name, int len) {
+    if (strncmp(name, "return", len) == 0) {
+        return TK_RETURN;
+    }
+    return -1;
 }
 
 int num() {
@@ -123,9 +131,15 @@ Token *tokenize(char *input_) {
             char *ident_buf = malloc(sizeof(char) * len + 1);
             readIdentName(ident_buf, len);
 
+            // マッチすれば、keywordのTokenTypeを返す
+            // そうでなければ、-1を返す
+            TokenType tt = matchKeyword(ident_buf, len);
+            if ((int)tt >= 0) {                
+                new_token = newToken(tt, 0);
+            } else {                
+                new_token = newIdentToken(ident_buf, len);
+            }
             input += len;
-
-            new_token = newIdentToken(ident_buf, len);
         } else {
             if (*input == '+') {
                 new_token = (Token *)newToken(TK_ADD, 0);

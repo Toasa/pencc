@@ -17,15 +17,15 @@ typedef enum enm_tk {
     TK_GE,        // >=
 
     TK_IDENT,     // 識別子
-
     TK_ASSIGN,    // =
+    TK_RETURN,    // return
 
     TK_SEMICOLON, // ;
 
     TK_EOF,
 } TokenType;
 
-char *tokenTypes[17];
+char *tokenTypes[18];
 
 typedef struct Token {
     TokenType type;
