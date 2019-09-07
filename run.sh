@@ -117,12 +117,21 @@ if (a == 21) {
 }
 """ 6
 
-# try """
-# i = 2;
-# while (i < 100)
-#     i = 2 * i;
-# return i;
-# """ 128
+try """
+i = 2;
+while (i < 100) {
+    i = 2 * i;
+}
+return i;
+""" 128
+
+try """
+i = 2;
+while (i < 100) {
+    i = 2 * i;
+    return i;
+}
+""" 4
 
 # try """
 # a = 4;
