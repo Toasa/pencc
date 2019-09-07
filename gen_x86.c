@@ -103,6 +103,4 @@ void genAssembly(ParsedData pd) {
     printf("main:\n");
 
     gen(pd);
-
-    printf("        ret\n");
 }
