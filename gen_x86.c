@@ -107,7 +107,7 @@ void genStmt(Node *n) {
         printf("        pop rax\n");
         printf("        cmp rax, 0\n");
         printf("        je .L_end\n");
-        genExpr(n->expr);
+        genStmt(n->expr);
         genExpr(n->post);
         printf("        jmp .L_start\n");
         printf(".L_end:\n");

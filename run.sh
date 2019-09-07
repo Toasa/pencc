@@ -135,8 +135,9 @@ while (i < 100) {
 
 try """
 a = 4;
-for (i = 33; i < 100; i = i + 33)
+for (i = 33; i < 100; i = i + 33) {
     a = a + i;
+}
 return a;
 """ 202
 
