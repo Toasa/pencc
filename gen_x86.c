@@ -90,7 +90,15 @@ void genStmt(Node *n) {
         }
         printf(".L_END:\n");
         printf("        pop rax\n");
-        
+    } else if (n->type == ND_WHILE) {
+        printf(".L_WHILESTART:\n");
+        genExpr(n->cond);
+        printf("        pop rax\n");
+        printf("        cmp rax, 0\n");
+        printf("        je .L_ALT\n");
+        genStmt(n->expr);
+        printf("        jmp .L_WHILESTART\n");
+        printf(".L_ALT:\n");
     } else {
         genExpr(n);
         printf("        pop rax\n");

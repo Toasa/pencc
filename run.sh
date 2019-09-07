@@ -112,4 +112,12 @@ x = 7;
 return x;
 """ 6
 
+try """
+i = 2;
+while (i < 100) {
+    i = 2 * i;
+}
+return i;
+""" 128
+
 echo OK

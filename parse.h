@@ -13,6 +13,7 @@ typedef enum enm_nd {
 
     ND_IDENT,  // a, foo, ...
     ND_IF,     // if
+    ND_WHILE,  // while
     ND_RETURN, // return
 
     ND_ASSIGN, // =
@@ -27,9 +28,10 @@ typedef struct Node {
     int val;    // typeがND_INTのときに使用
     int offset; // typeがND_ASSIGNのときに使用
 
-    struct Node *cond; // typeがND_IFのときに使用
+    struct Node *cond; // typeがND_IF、またはND_WHILEのときに使用
     struct Node *cons; // typeがND_IFのときに使用
     struct Node *alt;  // typeがND_IFのときに使用
+    struct Node *expr; // typeがND_WHILEのときに使用
 } Node;
 
 typedef struct ps {

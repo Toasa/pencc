@@ -1,7 +1,7 @@
 #include "util.h"
 #include "token.h"
 
-char *tokenTypes[20] = {
+char *tokenTypes[21] = {
     [TK_INT]       = "TK_INT",
     [TK_ADD]       = "TK_ADD",
     [TK_SUB]       = "TK_SUB",
@@ -19,6 +19,7 @@ char *tokenTypes[20] = {
     [TK_ASSIGN]    = "TK_ASSIGN",
     [TK_IF]        = "TK_IF",
     [TK_ELSE]      = "TK_ELSE",
+    [TK_WHILE]     = "TK_WHILE",
     [TK_RETURN]    = "TK_RETURN",
     [TK_SEMICOLON] = "TK_SEMICOLON",
     [TK_EOF]       = "TK_EOF",
@@ -45,10 +46,12 @@ bool isChar(char c) {
 TokenType matchKeyword(char *name) {
     if (strcmp(name, "return") == 0) {
         return TK_RETURN;
-    } else if (strcmp(name, "else") == 0) {
-        return TK_ELSE;
     } else if (strcmp(name, "if") == 0) {
         return TK_IF;
+    } else if (strcmp(name, "else") == 0) {
+        return TK_ELSE;
+    } else if (strcmp(name, "while") == 0) {
+        return TK_WHILE;
     }
     return -1;
 }
