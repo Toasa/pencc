@@ -120,4 +120,12 @@ while (i < 100) {
 return i;
 """ 128
 
+try """
+a = 4;
+for (i = 33; i < 100; i = i + 33)
+    a = a + i;
+}
+return a;
+""" 202
+
 echo OK

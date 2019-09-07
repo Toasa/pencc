@@ -99,6 +99,19 @@ void genStmt(Node *n) {
         genStmt(n->expr);
         printf("        jmp .L_WHILESTART\n");
         printf(".L_ALT:\n");
+        printf("        pop rax\n");
+    } else if (n->type == ND_FOR) {
+        genExpr(n->init);
+        printf(".L_start:\n");
+        genExpr(n->cond);
+        printf("        pop rax\n");
+        printf("        cmp rax, 0\n");
+        printf("        je .L_end\n");
+        genExpr(n->expr);
+        genExpr(n->post);
+        printf("        jmp .L_start\n");
+        printf(".L_end:\n");
+        printf("        pop rax\n");
     } else {
         genExpr(n);
         printf("        pop rax\n");

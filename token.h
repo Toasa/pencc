@@ -22,6 +22,7 @@ typedef enum enm_tk {
     TK_IF,        // if
     TK_ELSE,      // else
     TK_WHILE,     // while
+    TK_FOR,       // for
     TK_RETURN,    // return
 
     TK_SEMICOLON, // ;
@@ -29,7 +30,7 @@ typedef enum enm_tk {
     TK_EOF,
 } TokenType;
 
-char *tokenTypes[21];
+char *tokenTypes[22];
 
 typedef struct Token {
     TokenType type;
