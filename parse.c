@@ -45,6 +45,13 @@ Node *newIdentNode(char *ident, int ident_len) {
     return n;
 }
 
+Node *newFuncCallNode(char *ident, int ident_len) {
+    Node *n = newNode(ND_CALL, 0, NULL, NULL);
+    n->func = malloc(sizeof(char) * ident_len + 1);
+    strcpy(n->func, ident);
+    return n;
+}
+
 bool curTokenTypeIs(TokenType type) {
     return token->type == type;
 }
@@ -81,11 +88,20 @@ Node *parseNum() {
         eatToken(TK_LPARENT);
         n = parseEqual();
         eatToken(TK_RPARENT);
-    } else {
+    } else if (curTokenTypeIs(TK_IDENT)) {
         char *ident = token->ident;
         int ident_len = token->identLen;
         nextToken();
-        n = newIdentNode(ident, ident_len);
+        
+        // function call
+        if (curTokenTypeIs(TK_LPARENT)) {            
+            eatToken(TK_LPARENT);
+            n = newFuncCallNode(ident, ident_len);
+            eatToken(TK_RPARENT);
+        } else {
+        // identifier
+            n = newIdentNode(ident, ident_len);
+        }
     }
     
     return n;

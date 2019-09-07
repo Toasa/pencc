@@ -2,3 +2,5 @@ main
 tmp*
 .DS_Store
 a.out
+print.c
+*.o

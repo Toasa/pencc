@@ -18,6 +18,8 @@ typedef enum enm_nd {
     ND_RETURN, // return
     ND_BLOCK,  // {...; ...; ...;}
 
+    ND_CALL,   // foo() (function call)
+
     ND_ASSIGN, // =
 } NodeType;
 
@@ -37,6 +39,8 @@ typedef struct Node {
     struct Node *init; // typeがND_FORのときに使用
     struct Node *post; // typeがND_FORのときに使用
     struct Node *next; // typeがND_BLOCKのときに使用
+
+    char *func; // typeがND_CALLのときに使用。関数名を表す。
 } Node;
 
 typedef struct ps {

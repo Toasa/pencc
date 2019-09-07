@@ -17,6 +17,13 @@ try() {
     fi
 }
 
+funcCall() {
+    input="$1"
+    ./main "$input" > tmp.s
+    gcc -o tmp tmp.s print.o
+    ./tmp
+}
+
 try "1;" 1
 try "100;" 100
 try "255;" 255
@@ -158,5 +165,7 @@ while (i * j < 100) {
 }
 return i * j;
 """ 216
+
+funcCall "foo();"
 
 echo OK

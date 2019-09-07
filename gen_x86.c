@@ -36,6 +36,10 @@ void genExpr(Node *n) {
         genIdent(n);
     } else if (n->type == ND_ASSIGN) {
         genAssign(n);
+    } else if (n->type == ND_CALL) {
+        printf("        mov rax, 0\n");
+        printf("        call %s\n", n->func);
+        printf("        push rax\n");
     } else {
         printf("        pop rdi\n");
         printf("        pop rax\n");
