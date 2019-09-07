@@ -10,6 +10,9 @@ StringChain *strings;
 // stmtsの要素とし、格納する
 Node *stmts[100];
 
+Node *parseEqual();
+Node *parseStatement();
+
 // debug用
 void printIdents() {
     StringChain *sc = strings->next;
@@ -21,8 +24,6 @@ void printIdents() {
         i++;
     }
 }
-
-Node *parseEqual();
 
 Node *newNode(NodeType type, int val, Node *lhs, Node *rhs) {
     Node *node = malloc(sizeof(Node));
@@ -181,18 +182,35 @@ Node *parseExpression() {
     return parseAssign();
 }
 
+Node *parseIfStatement() {
+    Node *n = malloc(sizeof(Node));
+    nextToken();
+    eatToken(TK_LPARENT);
+    n->cond = parseExpression();
+    eatToken(TK_RPARENT);
+    n->cons = parseStatement();
+    return n;
+}
+
+Node *parseReturnStatement() {
+    Node *n = malloc(sizeof(Node));
+    nextToken();
+    n->lhs = parseExpression();
+    n->type = ND_RETURN;
+    eatToken(TK_SEMICOLON);
+    return n;
+}
+
 Node *parseStatement() {
     Node *n;
-
     if (curTokenTypeIs(TK_RETURN)) {
-        n = malloc(sizeof(Node));
-        nextToken();
-        n->lhs = parseExpression();
-        n->type = ND_RETURN;
+        n = parseReturnStatement();
+    } else if (curTokenTypeIs(TK_IF)) {
+        n = parseIfStatement();
     } else {
         n = parseExpression();
+        eatToken(TK_SEMICOLON);
     }
-    eatToken(TK_SEMICOLON);
     return n;
 }
 

@@ -18,6 +18,8 @@ typedef enum enm_tk {
 
     TK_IDENT,     // 識別子
     TK_ASSIGN,    // =
+
+    TK_IF,        // if
     TK_RETURN,    // return
 
     TK_SEMICOLON, // ;
@@ -25,7 +27,7 @@ typedef enum enm_tk {
     TK_EOF,
 } TokenType;
 
-char *tokenTypes[18];
+char *tokenTypes[19];
 
 typedef struct Token {
     TokenType type;

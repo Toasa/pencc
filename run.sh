@@ -77,5 +77,9 @@ a = 5;
 return a + 10;
 """ 15
 
+# try """
+# if (1) return 46;
+# """ 46
+
 
 echo OK
