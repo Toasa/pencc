@@ -133,28 +133,29 @@ while (i < 100) {
 }
 """ 4
 
-# try """
-# a = 4;
-# for (i = 33; i < 100; i = i + 33)
-#     a = a + i;
-# return a;
-# """ 202
+try """
+a = 4;
+for (i = 33; i < 100; i = i + 33)
+    a = a + i;
+return a;
+""" 202
 
-# try """
-# {
-#     a = 10;
-#     b = 20;
-#     return a * b;
-# }
-# """ 200
+try """
+{
+    a = 10;
+    b = 20;
+    return a * b;
+}
+""" 200
 
-# try """
-# i = 1;
-# j = 1;
-# while (i * j < 100) {
-#     i = i * 2;
-#     j = j * 3;
-# }
-# return i * j;
-# """
+try """
+i = 1;
+j = 1;
+while (i * j < 100) {
+    i = i * 2;
+    j = j * 3;
+}
+return i * j;
+""" 216
+
 echo OK
