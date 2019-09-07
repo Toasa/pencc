@@ -21,7 +21,8 @@ int main(int argc, char **argv) {
     int input_len = strlen(argv[1]);
     setInput(input_len, argv[1]);
     
-    Token *token_head = tokenize(input);    
+    Token *token_head = tokenize(input);
+    // printTokens(token_head);
     ParsedData ps = parse(token_head);
     genAssembly(ps);
 

@@ -43,11 +43,11 @@ bool isChar(char c) {
 }
 
 TokenType matchKeyword(char *name, int len) {
-    if (strncmp(name, "return", len) == 0) {
+    if (strcmp(name, "return") == 0) {
         return TK_RETURN;
-    } else if (strncmp(name, "else", len) == 0) {
+    } else if (strcmp(name, "else") == 0) {
         return TK_ELSE;
-    } else if (strncmp(name, "if", len) == 0) {
+    } else if (strcmp(name, "if") == 0) {
         return TK_IF;
     }
     return -1;
