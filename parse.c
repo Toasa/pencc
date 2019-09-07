@@ -200,7 +200,7 @@ Node *parseIfStatement() {
 Node *parseReturnStatement() {
     Node *n = malloc(sizeof(Node));
     nextToken();
-    n->lhs = parseExpression();
+    n->expr = parseExpression();
     n->type = ND_RETURN;
     eatToken(TK_SEMICOLON);
     return n;

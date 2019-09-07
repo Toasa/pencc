@@ -72,7 +72,7 @@ void genExpr(Node *n) {
 
 void genStmt(Node *n) {
     if (n->type == ND_RETURN) {
-        genExpr(n->lhs);
+        genExpr(n->expr);
         printf("        pop rax\n");
         printf("        mov rsp, rbp\n");
         printf("        pop rbp\n");

@@ -31,7 +31,7 @@ typedef struct Node {
     struct Node *cond; // typeがND_IF、またはND_WHILEのときに使用
     struct Node *cons; // typeがND_IFのときに使用
     struct Node *alt;  // typeがND_IFのときに使用
-    struct Node *expr; // typeがND_WHILEのときに使用
+    struct Node *expr; // typeがND_RETURN, ND_WHILEのときに使用
 } Node;
 
 typedef struct ps {
