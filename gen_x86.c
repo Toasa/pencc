@@ -112,6 +112,12 @@ void genStmt(Node *n) {
         printf("        jmp .L_start\n");
         printf(".L_end:\n");
         printf("        pop rax\n");
+    } else if (n->type == ND_BLOCK) {
+        Node *cur = n->next;
+        while (cur) {
+            genStmt(cur);
+            cur = cur->next;
+        }
     } else {
         genExpr(n);
         printf("        pop rax\n");

@@ -1,7 +1,7 @@
 #include "util.h"
 #include "token.h"
 
-char *tokenTypes[22] = {
+char *tokenTypes[24] = {
     [TK_INT]       = "TK_INT",
     [TK_ADD]       = "TK_ADD",
     [TK_SUB]       = "TK_SUB",
@@ -9,6 +9,8 @@ char *tokenTypes[22] = {
     [TK_DIV]       = "TK_DIV",
     [TK_LPARENT]   = "TK_LPARENT",
     [TK_RPARENT]   = "TK_RPARENT",
+    [TK_LBRACE]    = "TK_LBRACE",
+    [TK_RBRACE]    = "TK_RBRACE",
     [TK_EQ]        = "TK_EQ",
     [TK_NQ]        = "TK_NQ",
     [TK_LT]        = "TK_LT",
@@ -165,6 +167,10 @@ Token *tokenize(char *input_) {
                 new_token = newToken(TK_LPARENT, 0);
             } else if (*input == ')') {
                 new_token = newToken(TK_RPARENT, 0);
+            } else if (*input == '{') {
+                new_token = newToken(TK_LBRACE, 0);
+            } else if (*input == '}') {
+                new_token = newToken(TK_RBRACE, 0);
             } else if (*input == '<') {
                 if (*(input+1) == '=') {
                     new_token = newToken(TK_LE, 0);

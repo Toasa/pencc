@@ -16,6 +16,7 @@ typedef enum enm_nd {
     ND_WHILE,  // while
     ND_FOR,    // for
     ND_RETURN, // return
+    ND_BLOCK,  // {...; ...; ...;}
 
     ND_ASSIGN, // =
 } NodeType;
@@ -35,6 +36,7 @@ typedef struct Node {
     struct Node *expr; // typeがND_RETURN, ND_WHILE, ND_FORのときに使用
     struct Node *init; // typeがND_FORのときに使用
     struct Node *post; // typeがND_FORのときに使用
+    struct Node *next; // typeがND_BLOCKのときに使用
 } Node;
 
 typedef struct ps {

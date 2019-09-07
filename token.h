@@ -8,6 +8,8 @@ typedef enum enm_tk {
     TK_DIV,       // /
     TK_LPARENT,   // (
     TK_RPARENT,   // )
+    TK_LBRACE,    // {
+    TK_RBRACE,    // }
 
     TK_EQ,        // ==
     TK_NQ,        // !=
@@ -30,7 +32,7 @@ typedef enum enm_tk {
     TK_EOF,
 } TokenType;
 
-char *tokenTypes[22];
+char *tokenTypes[24];
 
 typedef struct Token {
     TokenType type;

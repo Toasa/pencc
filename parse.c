@@ -232,6 +232,26 @@ Node *parseForStatement() {
     return n;
 }
 
+Node *parseBlockStatement() {
+    nextToken();
+    Node *n = malloc(sizeof(Node));
+    n->type = ND_BLOCK;
+
+    Node *cur = malloc(sizeof(Node));
+    n->next = cur;
+
+    while (!curTokenTypeIs(TK_RBRACE)) {
+        Node *next = parseStatement();
+        cur->next = next;
+        cur = next;
+    }
+
+    eatToken(TK_RBRACE);
+
+    n->next = n->next->next;
+    return n;
+}
+
 Node *parseStatement() {
     Node *n;
     if (curTokenTypeIs(TK_RETURN)) {
@@ -242,6 +262,8 @@ Node *parseStatement() {
         n = parseWhileStatement();
     } else if (curTokenTypeIs(TK_FOR)) {
         n = parseForStatement();
+    } else if (curTokenTypeIs(TK_LBRACE)) {
+        n = parseBlockStatement();
     } else {
         n = parseExpression();
         eatToken(TK_SEMICOLON);
