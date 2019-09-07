@@ -81,10 +81,16 @@ void genStmt(Node *n) {
         genExpr(n->cond);
         printf("        pop rax\n");
         printf("        cmp rax, 0\n");
-        printf("        je .L0000\n");
+        printf("        je .L_ALT\n");
         genStmt(n->cons);
-        printf(".L0000:\n");
+        printf("        jmp .L_END\n");
+        printf(".L_ALT:\n");
+        if (n->alt) {
+            genStmt(n->alt);
+        }
+        printf(".L_END:\n");
         printf("        pop rax\n");
+        
     } else {
         genExpr(n);
         printf("        pop rax\n");

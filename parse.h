@@ -29,6 +29,7 @@ typedef struct Node {
 
     struct Node *cond; // typeがND_IFのときに使用
     struct Node *cons; // typeがND_IFのときに使用
+    struct Node *alt;  // typeがND_IFのときに使用
 } Node;
 
 typedef struct ps {

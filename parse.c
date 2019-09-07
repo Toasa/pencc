@@ -190,6 +190,10 @@ Node *parseIfStatement() {
     n->cond = parseExpression();
     eatToken(TK_RPARENT);
     n->cons = parseStatement();
+    if (curTokenTypeIs(TK_ELSE)) {
+        nextToken();
+        n->alt = parseStatement();
+    }
     return n;
 }
 
