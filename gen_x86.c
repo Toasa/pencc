@@ -70,18 +70,31 @@ void genExpr(Node *n) {
     }
 }
 
+void genStmt(Node *n) {
+    if (n->type == ND_RETURN) {
+        genExpr(n->lhs);
+        printf("        pop rax\n");
+        printf("        mov rsp, rbp\n");
+        printf("        pop rbp\n");
+        printf("        ret\n");
+    } else if (n->type == ND_IF) {
+        genExpr(n->cond);
+        printf("        pop rax\n");
+        printf("        cmp rax, 0\n");
+        printf("        je .L0000\n");
+        genStmt(n->cons);
+        printf(".L0000:\n");
+        printf("        pop rax\n");
+    } else {
+        genExpr(n);
+        printf("        pop rax\n");
+    }
+}
+
 void genStmts(Node **stmts) {
     int i;
     for (i = 0; stmts[i]; i++) {
-        Node *n = stmts[i];
-        if (n->type == ND_RETURN) {
-            genExpr(n->lhs);
-            printf("        pop rax\n");
-            return;
-        } else {
-            genExpr(n);
-            printf("        pop rax\n");
-        }
+        genStmt(stmts[i]);
     }
 }
 

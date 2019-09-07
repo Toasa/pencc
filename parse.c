@@ -184,6 +184,7 @@ Node *parseExpression() {
 
 Node *parseIfStatement() {
     Node *n = malloc(sizeof(Node));
+    n->type = ND_IF;
     nextToken();
     eatToken(TK_LPARENT);
     n->cond = parseExpression();

@@ -77,9 +77,16 @@ a = 5;
 return a + 10;
 """ 15
 
-# try """
-# if (1) return 46;
-# """ 46
+try "if (1) return 46;" 46
 
+try """
+a = 40;
+if (a / 2 == 20) return 5; return 6;
+""" 5
+
+try """
+a = 40;
+if (a / 2 == 21) return 5; return 6;
+""" 6
 
 echo OK
