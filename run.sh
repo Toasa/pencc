@@ -90,49 +90,53 @@ i = i + 1;
 return i;
 """ 8
 
-try "if (1) return 46;" 46
-
 try """
-a = 40;
-if (a / 2 == 20) return 5; return 6;
-""" 5
-
-try """
-a = 40;
-if (a / 2 == 21) return 5; return 6;
-""" 6
-
-try """
-a = 10;
-if (a == 21)
-return 5;
-else
-return 6;
-x = 7;
-return x;
-""" 6
-
-try """
-i = 2;
-while (i < 100)
-    i = 2 * i;
-return i;
-""" 128
-
-try """
-a = 4;
-for (i = 33; i < 100; i = i + 33)
-    a = a + i;
-return a;
-""" 202
-
-try """
-{
-    a = 10;
-    b = 20;
-    return a * b;
+if (1) {
+    return 46;
 }
-""" 200
+""" 46
+
+# try """
+# a = 40;
+# if (a / 2 == 20) return 5; return 6;
+# """ 5
+
+# try """
+# a = 40;
+# if (a / 2 == 21) return 5; return 6;
+# """ 6
+
+# try """
+# a = 10;
+# if (a == 21)
+# return 5;
+# else
+# return 6;
+# x = 7;
+# return x;
+# """ 6
+
+# try """
+# i = 2;
+# while (i < 100)
+#     i = 2 * i;
+# return i;
+# """ 128
+
+# try """
+# a = 4;
+# for (i = 33; i < 100; i = i + 33)
+#     a = a + i;
+# return a;
+# """ 202
+
+# try """
+# {
+#     a = 10;
+#     b = 20;
+#     return a * b;
+# }
+# """ 200
 
 # try """
 # i = 1;
