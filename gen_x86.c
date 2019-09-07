@@ -70,18 +70,27 @@ void genExpr(Node *n) {
     }
 }
 
+void genStmts(Node **stmts) {
+    int i;
+    for (i = 0; stmts[i]; i++) {
+        Node *n = stmts[i];
+        if (n->type == ND_RETURN) {
+            genExpr(n->lhs);
+            printf("        pop rax\n");
+            return;
+        } else {
+            genExpr(n);
+            printf("        pop rax\n");
+        }
+    }
+}
+
 void gen(ParsedData pd) {
     printf("        push rbp\n");
     printf("        mov rbp, rsp\n");
     printf("        sub rsp, %d\n", pd.identNum * 8);
 
-    int i;
-    for (i = 0; pd.stmts[i]; i++) {
-        Node *n = pd.stmts[i];        
-        genExpr(n);
-
-        printf("        pop rax\n");
-    }
+    genStmts(pd.stmts);
 
     printf("        mov rsp, rbp\n");
     printf("        pop rbp\n");

@@ -182,7 +182,16 @@ Node *parseExpression() {
 }
 
 Node *parseStatement() {
-    Node *n = parseExpression();
+    Node *n;
+
+    if (curTokenTypeIs(TK_RETURN)) {
+        n = malloc(sizeof(Node));
+        nextToken();
+        n->lhs = parseExpression();
+        n->type = ND_RETURN;
+    } else {
+        n = parseExpression();
+    }
     eatToken(TK_SEMICOLON);
     return n;
 }

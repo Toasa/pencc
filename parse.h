@@ -12,6 +12,7 @@ typedef enum enm_nd {
     ND_LE,     // <=
 
     ND_IDENT,  // a, foo, ...
+    ND_RETURN, // return
 
     ND_ASSIGN, // =
 } NodeType;
@@ -19,8 +20,7 @@ typedef enum enm_nd {
 typedef struct Node {
     NodeType type;
 
-    int val; // typeがND_INTのときに使用
-    // char ident; // typeがND_ASSIGNのときに使用
+    int val;    // typeがND_INTのときに使用
     int offset; // typeがND_ASSIGNのときに使用
     
     struct Node *lhs;
