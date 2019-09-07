@@ -63,7 +63,7 @@ int identLength() {
 }
 
 void skip() {
-    while (*input == ' ') {
+    while (*input == ' ' || *input == '\t' || *input == '\n') {
         input++;
     }
 }

@@ -72,5 +72,10 @@ try "a = 14; return a;" 14
 try "return 100; return 200;" 100
 try "a = 5; b = 30; return a * b;" 150
 
+try """
+a = 5;
+return a + 10;
+""" 15
+
 
 echo OK
