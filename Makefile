@@ -1,5 +1,5 @@
 run:
-	gcc -o main *.c
+	gcc -o main main.c token.c parse.c gen_x86.c util.c
 	./run.sh
 
 clean:

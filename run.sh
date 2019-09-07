@@ -20,7 +20,8 @@ try() {
 funcCall() {
     input="$1"
     ./main "$input" > tmp.s
-    gcc -o tmp tmp.s print.o
+    cc -c -w extern_funcs.c
+    gcc -o tmp tmp.s extern_funcs.o
     ./tmp
 }
 
@@ -166,6 +167,6 @@ while (i * j < 100) {
 return i * j;
 """ 216
 
-funcCall "foo();"
+funcCall "howdy();"
 
 echo OK
