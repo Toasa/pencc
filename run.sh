@@ -169,6 +169,9 @@ return i * j;
 
 funcCall "howdy();"
 
-funcCall "addPrint(10, 11, 12, 13);"
+funcCall "add2(10, 11);"
+funcCall "add3(10, 11, 12);"
+funcCall "add4(10, 11, 12, 13);"
+funcCall "add5(10, 11, 12, 13, 14);"
 
 echo OK

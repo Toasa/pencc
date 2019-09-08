@@ -31,8 +31,8 @@ char *tokenTypes[25] = {
 
 char *input;
 
-bool isDigit() {
-    if (('0' <= *input) && (*input <= '9'))
+bool isDigit(char c) {
+    if (('0' <= c) && (c <= '9'))
         return true;
     else 
         return false;
@@ -64,14 +64,14 @@ TokenType matchKeyword(char *name) {
 
 int num() {
     int n = *input++ - '0';
-    while (isDigit())
+    while (isDigit(*input))
         n = 10 * n + (*input++ - '0');
     return n;
 }
 
 int identLength() {
     int i = 1;
-    while (isChar(*(input+i))) {
+    while (isChar(*(input+i)) || isDigit(*(input+i))) {
         i++;
     }
     return i;
@@ -137,7 +137,7 @@ Token *tokenize(char *input_) {
 
     while (*input) {
         skip();
-        if (isDigit()) {
+        if (isDigit(*input)) {
             new_token = newToken(TK_INT, num());
         } else if (isChar(*input)) {
             int len = identLength();
