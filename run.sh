@@ -169,4 +169,6 @@ return i * j;
 
 funcCall "howdy();"
 
+funcCall "addPrint(10, 11, 12, 13);"
+
 echo OK

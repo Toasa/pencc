@@ -12,6 +12,7 @@ Node *stmts[100];
 
 Node *parseEqual();
 Node *parseStatement();
+Node *parseExpression();
 
 // debug用
 void printIdents() {
@@ -94,9 +95,26 @@ Node *parseNum() {
         nextToken();
         
         // function call
-        if (curTokenTypeIs(TK_LPARENT)) {            
+        if (curTokenTypeIs(TK_LPARENT)) {
             eatToken(TK_LPARENT);
             n = newFuncCallNode(ident, ident_len);
+
+            Node *cur = malloc(sizeof(Node));
+            n->next = cur;
+
+            int args_num = 0;
+            while (!curTokenTypeIs(TK_RPARENT)) {
+                Node *next = parseExpression();
+                cur->next = next;
+                cur = next;
+                if (curTokenTypeIs(TK_COMMA)) {
+                    nextToken();
+                }
+                args_num++;
+            }
+            n->next = n->next->next;
+            n->argsNum = args_num;
+
             eatToken(TK_RPARENT);
         } else {
         // identifier

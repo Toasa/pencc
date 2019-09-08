@@ -38,9 +38,11 @@ typedef struct Node {
     struct Node *expr; // typeがND_RETURN, ND_WHILE, ND_FORのときに使用
     struct Node *init; // typeがND_FORのときに使用
     struct Node *post; // typeがND_FORのときに使用
-    struct Node *next; // typeがND_BLOCKのときに使用
+    struct Node *next; // typeがND_BLOCK, ND_CALLのときに使用
+                       // ND_CALLでは引数を表す
 
-    char *func; // typeがND_CALLのときに使用。関数名を表す。
+    char *func; // typeがND_CALLのときに使用。関数名を表す
+    int argsNum; // typeがND_CALLのときに使用。引数の個数を表す
 } Node;
 
 typedef struct ps {

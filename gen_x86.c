@@ -3,6 +3,8 @@
 #include "parse.h"
 #include "gen_x86.h"
 
+char *regs[6] = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
+
 void genExpr(Node *n);
 
 int calcOffset(char c) {
@@ -37,6 +39,16 @@ void genExpr(Node *n) {
     } else if (n->type == ND_ASSIGN) {
         genAssign(n);
     } else if (n->type == ND_CALL) {
+        int i = 0;
+        Node *cur = n->next;
+        while (cur) {
+            genExpr(cur);
+            printf("        pop rax\n");
+            printf("        mov %s, rax\n", regs[i]);
+            cur = cur->next;
+            i++;
+        }
+
         printf("        mov rax, 0\n");
         printf("        call %s\n", n->func);
         printf("        push rax\n");

@@ -1,7 +1,7 @@
 #include "util.h"
 #include "token.h"
 
-char *tokenTypes[24] = {
+char *tokenTypes[25] = {
     [TK_INT]       = "TK_INT",
     [TK_ADD]       = "TK_ADD",
     [TK_SUB]       = "TK_SUB",
@@ -25,6 +25,7 @@ char *tokenTypes[24] = {
     [TK_FOR]       = "TK_FOR",
     [TK_RETURN]    = "TK_RETURN",
     [TK_SEMICOLON] = "TK_SEMICOLON",
+    [TK_COMMA]     = "TK_COMMA",
     [TK_EOF]       = "TK_EOF",
 };
 
@@ -199,6 +200,8 @@ Token *tokenize(char *input_) {
                 }
             } else if (*input == ';') {
                 new_token = newToken(TK_SEMICOLON, 0);
+            } else if (*input == ',') {
+                new_token = newToken(TK_COMMA, 0);
             }
             input++;
         }

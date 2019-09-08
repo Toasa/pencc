@@ -4,8 +4,8 @@ typedef enum enm_tk {
     TK_ADD,       // +
     TK_SUB,       // -
     TK_MUL,       // *
-
     TK_DIV,       // /
+
     TK_LPARENT,   // (
     TK_RPARENT,   // )
     TK_LBRACE,    // {
@@ -28,11 +28,12 @@ typedef enum enm_tk {
     TK_RETURN,    // return
 
     TK_SEMICOLON, // ;
+    TK_COMMA,     // ,
 
     TK_EOF,
 } TokenType;
 
-char *tokenTypes[24];
+char *tokenTypes[25];
 
 typedef struct Token {
     TokenType type;
