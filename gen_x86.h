@@ -1,1 +1,1 @@
-void genAssembly(ParsedData ps);
+void genAssembly(FuncData **funcs);

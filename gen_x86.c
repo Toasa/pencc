@@ -140,29 +140,29 @@ void genStmt(Node *n) {
     }
 }
 
-void genStmts(Node **stmts) {
-    int i;
-    for (i = 0; stmts[i]; i++) {
-        genStmt(stmts[i]);
-    }
-}
-
-void gen(ParsedData pd) {
+void genFunc(Node *func, int ident_num) {
     printf("        push rbp\n");
     printf("        mov rbp, rsp\n");
-    printf("        sub rsp, %d\n", pd.identNum * 8);
+    printf("        sub rsp, %d\n", ident_num * 8);
 
-    genStmts(pd.stmts);
+    genStmt(func->expr);
 
     printf("        mov rsp, rbp\n");
     printf("        pop rbp\n");
     printf("        ret\n");
 }
 
-void genAssembly(ParsedData pd) {
+void gen(FuncData **funcs) {
+    int i;
+    for (i = 0; funcs[i]; i++) {
+        genFunc(funcs[i]->topLevelFunc, funcs[i]->identNum);
+    }
+}
+
+void genAssembly(FuncData **funcs) {
     printf(".intel_syntax noprefix\n");
     printf(".global main\n\n");
     printf("main:\n");
 
-    gen(pd);
+    gen(funcs);
 }

@@ -5,10 +5,10 @@
 Token *token;
 StringChain *strings;
 
-// parseProgram()で各statementをparseし、
-// parse結果として得られる各statement nodeを
-// stmtsの要素とし、格納する
-Node *stmts[100];
+// parseProgram()で各function literalparseし、
+// parse結果として得られる各function nodeを
+// funcsの要素とし、格納する
+FuncData *funcs[100];
 
 Node *parseEqual();
 Node *parseStatement();
@@ -46,8 +46,8 @@ Node *newIdentNode(char *ident, int ident_len) {
     return n;
 }
 
-Node *newFuncCallNode(char *ident, int ident_len) {
-    Node *n = newNode(ND_CALL, 0, NULL, NULL);
+Node *newFuncNode(NodeType type, char *ident, int ident_len) {
+    Node *n = newNode(type, 0, NULL, NULL);
     n->func = malloc(sizeof(char) * ident_len + 1);
     strcpy(n->func, ident);
     return n;
@@ -55,6 +55,13 @@ Node *newFuncCallNode(char *ident, int ident_len) {
 
 bool curTokenTypeIs(TokenType type) {
     return token->type == type;
+}
+
+bool nextTokenTypeIs(TokenType type) {
+    if (curTokenTypeIs(TK_EOF)) {
+        error("Currrent token is TK_EOF, not exist next token");
+    }
+    return token->next->type == type;
 }
 
 void expect(TokenType type) {
@@ -75,6 +82,52 @@ void eatToken(TokenType type) {
     nextToken();
 }
 
+Node *parseIdent() {
+    char *ident = token->ident;
+    int ident_len = token->identLen;
+    nextToken();
+    Node *n = newIdentNode(ident, ident_len);
+    return n;
+}
+
+void parseFunctionArgs(Node *n) {
+    eatToken(TK_LPARENT);
+
+    Node *cur = malloc(sizeof(Node));
+    n->next = cur;
+
+    int args_num = 0;
+    while (!curTokenTypeIs(TK_RPARENT)) {
+        Node *next;
+        if (n->type == ND_CALL) {
+            next = parseExpression();
+        } else if (n->type == ND_FUNC) {
+            next = parseIdent();
+        } else {
+            error("ND_CALL or ND_FUNC Only");
+        }
+        
+        cur->next = next;
+        cur = next;
+        if (curTokenTypeIs(TK_COMMA)) {
+            nextToken();
+        }
+        args_num++;
+    }
+    n->next = n->next->next;
+    n->argsNum = args_num;
+
+    eatToken(TK_RPARENT);
+}
+
+Node *parseFunctionName(Node *n, NodeType type) {
+    char *ident = token->ident;
+    int ident_len = token->identLen;
+    n = newFuncNode(type, ident, ident_len);
+    eatToken(TK_IDENT);
+    return n;
+}
+
 Node *parseNum() {
     if (!curTokenTypeIs(TK_INT) && !curTokenTypeIs(TK_LPARENT) && !curTokenTypeIs(TK_IDENT)) {
         error("expected TK_INT or TK_LPARENT or TK_IDENT, but got %s", tokenTypes[token->type]);
@@ -90,35 +143,13 @@ Node *parseNum() {
         n = parseEqual();
         eatToken(TK_RPARENT);
     } else if (curTokenTypeIs(TK_IDENT)) {
-        char *ident = token->ident;
-        int ident_len = token->identLen;
-        nextToken();
-        
-        // function call
-        if (curTokenTypeIs(TK_LPARENT)) {
-            eatToken(TK_LPARENT);
-            n = newFuncCallNode(ident, ident_len);
-
-            Node *cur = malloc(sizeof(Node));
-            n->next = cur;
-
-            int args_num = 0;
-            while (!curTokenTypeIs(TK_RPARENT)) {
-                Node *next = parseExpression();
-                cur->next = next;
-                cur = next;
-                if (curTokenTypeIs(TK_COMMA)) {
-                    nextToken();
-                }
-                args_num++;
-            }
-            n->next = n->next->next;
-            n->argsNum = args_num;
-
-            eatToken(TK_RPARENT);
+        if (nextTokenTypeIs(TK_LPARENT)) {
+            // function call
+            n = parseFunctionName(n, ND_CALL);
+            parseFunctionArgs(n);
         } else {
-        // identifier
-            n = newIdentNode(ident, ident_len);
+            // identifier
+            n = parseIdent();
         }
     }
     
@@ -305,21 +336,38 @@ Node *parseStatement() {
     return n;
 }
 
+Node *parseFunctionLiteral() {
+    Node *n;
+
+    // ident
+    n = parseFunctionName(n, ND_FUNC);
+
+    // args
+    // 関数の引数もその関数内のローカル変数として、処理する
+    parseFunctionArgs(n);
+
+    // block
+    n->expr = parseBlockStatement();
+
+    return n;
+}
+
 void parseProgram() {
     int i = 0;
     while (!curTokenTypeIs(TK_EOF)) {
-        stmts[i++]  = parseStatement();
+        strings = initStringChain();
+        funcs[i] = malloc(sizeof(FuncData));
+        funcs[i]->topLevelFunc  = parseFunctionLiteral();
+        funcs[i]->identNum = strings->total;
+        i++;
     }
-    stmts[i] = NULL;
+    funcs[i] = NULL;
 }
  
-ParsedData parse(Token *token_) {
+FuncData **parse(Token *token_) {
     token = token_;
-    strings = initStringChain();
     parseProgram();
-
-    ParsedData pd;
-    pd.stmts = stmts;
-    pd.identNum = strings->total;
-    return pd;
+    // printf("ident num: %d\n", funcs[0]->identNum);
+    // printf("%s\n", funcs[0]->topLevelFunc->func);
+    return funcs;
 }
