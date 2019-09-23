@@ -160,7 +160,14 @@ void genStmt(Node *n) {
 void genFunc(Node *func, int ident_num) {
     printf("        push rbp\n");
     printf("        mov rbp, rsp\n");
-    printf("        sub rsp, %d\n", ident_num * 8);
+
+    // 関数呼び出し(call命令)の際、rspが16の倍数になっている必要がある
+    if (ident_num % 2 == 1) {
+        printf("        sub rsp, %d\n", (ident_num + 1) * 8);
+    } else {
+        printf("        sub rsp, %d\n", ident_num * 8);
+    }
+    
 
     int args_i;
     for (args_i = 0; args_i < func->argsNum; args_i++) {
