@@ -43,6 +43,9 @@ try "main() { 5 / 2; }" 2
 try "main() { 4 / 2 + 3; }" 5
 try "main() { 4 + 9 / 3; }" 7
 
+try "main() { 70 % 5; }" 0
+try "main() { 70 % 11; }" 4
+
 try "main() { (2); }" 2
 try "main() { (((30))); }" 30
 try "main() { (2 * 30); }" 60
@@ -85,6 +88,7 @@ try "main() { x = 10; x += 2; return x; }" 12
 try "main() { x = 10; x -= 2; return x; }" 8
 try "main() { x = 10; x *= 2; return x; }" 20
 try "main() { x = 10; x /= 2; return x; }" 5
+try "main() { x = 10; x %= 2; return x; }" 0
 
 try """
 main() {

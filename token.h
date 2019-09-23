@@ -5,6 +5,7 @@ typedef enum enm_tk {
     TK_SUB,        // -
     TK_MUL,        // *
     TK_DIV,        // /
+    TK_REM,        // %
 
     TK_LPARENT,    // (
     TK_RPARENT,    // )
@@ -25,6 +26,7 @@ typedef enum enm_tk {
     TK_SUB_ASSIGN, // -=
     TK_MUL_ASSIGN, // *=
     TK_DIV_ASSIGN, // /=
+    TK_REM_ASSIGN, // %=
 
     TK_IF,         // if
     TK_ELSE,       // else
@@ -38,7 +40,7 @@ typedef enum enm_tk {
     TK_EOF,
 } TokenType;
 
-char *tokenTypes[29];
+char *tokenTypes[31];
 
 typedef struct Token {
     TokenType type;

@@ -5,6 +5,7 @@ typedef enum enm_nd {
     ND_SUB,    // -
     ND_MUL,    // *
     ND_DIV,    // /
+    ND_REM,    // %
 
     ND_EQ,     // ==
     ND_NQ,     // !=

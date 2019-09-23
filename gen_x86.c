@@ -67,6 +67,12 @@ void genExpr(Node *n) {
             printf("        cqo\n");
             // idivはdivの符号ありバージョン
             printf("        idiv rdi\n");
+        } else if (n->type == ND_REM) {
+            printf("        xor rdx, rdx\n");
+            // div? idiv?
+            printf("        idiv rdi\n");
+            // 割り算のあまりは自動的にrdxに格納される
+            printf("        mov rax, rdx\n");
         } else if (n->type == ND_EQ) {
             printf("        cmp rax, rdi\n");
             printf("        sete al\n");
@@ -168,7 +174,9 @@ void genFunc(Node *func, int ident_num) {
         printf("        sub rsp, %d\n", ident_num * 8);
     }
     
-
+    // 現状では関数の引数を、関数内のローカル変数と同等に扱っているため
+    // rbpからのネガティブのオフセットで、引数にアクセスする。
+    // これは本来おかしいかも。プラスのオフセットでアクセスすべき？
     int args_i;
     for (args_i = 0; args_i < func->argsNum; args_i++) {
         printf("        mov [rbp - %d], %s\n", (args_i + 1) * 8, regs[args_i]);
