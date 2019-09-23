@@ -253,20 +253,18 @@ main() {
 }
 """ 120
 
+try """
+fibo(n) {
+    if (n <= 2) {
+        return 1;
+    }
+    return fibo(n - 1) + fibo(n - 2);
+}
 
-
-# try """
-# fibo(n) {
-#     if (n <= 1) {
-#         return 1;
-#     }
-#     return fibo(n - 1) + fibo(n - 2);
-# }
-
-# main() {
-#     return fibo(3);
-# }
-# """ 3
+main() {
+    return fibo(10);
+}
+""" 55
 
 funcCall "main() { howdy(); }"
 
