@@ -173,7 +173,8 @@ Node *parseUnary() {
 Node *parseMul() {
     Node *lhs = parseUnary();
     while (token->type == TK_MUL || token->type == TK_DIV
-        || token->type == TK_REM) {
+        || token->type == TK_REM || token->type == TK_LSHIFT
+        || token->type == TK_RSHIFT) {
         if (token->type == TK_MUL) {
             nextToken();
             lhs = newNode(ND_MUL, 0, lhs, parseUnary());
@@ -183,6 +184,12 @@ Node *parseMul() {
         } else if (token->type == TK_REM) {
             nextToken();
             lhs = newNode(ND_REM, 0, lhs, parseUnary());
+        } else if (token->type == TK_LSHIFT) {
+            nextToken();
+            lhs = newNode(ND_LSHIFT, 0, lhs, parseUnary());
+        } else if (token->type == TK_RSHIFT) {
+            nextToken();
+            lhs = newNode(ND_RSHIFT, 0, lhs, parseUnary());
         }
     }
     return lhs;

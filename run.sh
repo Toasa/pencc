@@ -46,6 +46,11 @@ try "main() { 4 + 9 / 3; }" 7
 try "main() { 70 % 5; }" 0
 try "main() { 70 % 11; }" 4
 
+try "main() { 30 >> 1; }" 15
+try "main() { 30 << 1; }" 60
+try "main() { 30 >> 2; }" 7
+try "main() { 30 << 2; }" 120
+
 try "main() { (2); }" 2
 try "main() { (((30))); }" 30
 try "main() { (2 * 30); }" 60

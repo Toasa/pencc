@@ -73,6 +73,13 @@ void genExpr(Node *n) {
             printf("        idiv rdi\n");
             // 割り算のあまりは自動的にrdxに格納される
             printf("        mov rax, rdx\n");
+        } else if (n->type == ND_LSHIFT) {
+            // clはrcxの下位8bit
+            printf("        mov rcx, rdi\n");
+            printf("        shl rax, cl\n");
+        } else if (n->type == ND_RSHIFT) {
+            printf("        mov rcx, rdi\n");
+            printf("        sar rax, cl\n");
         } else if (n->type == ND_EQ) {
             printf("        cmp rax, rdi\n");
             printf("        sete al\n");

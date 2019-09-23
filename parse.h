@@ -6,6 +6,8 @@ typedef enum enm_nd {
     ND_MUL,    // *
     ND_DIV,    // /
     ND_REM,    // %
+    ND_LSHIFT, // >>
+    ND_RSHIFT, // <<
 
     ND_EQ,     // ==
     ND_NQ,     // !=
