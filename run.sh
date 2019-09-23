@@ -230,6 +230,19 @@ main() {
 }
 """ 55
 
+# try """
+# fibo(n) {
+#     if (n <= 1) {
+#         return 1;
+#     }
+#     return fibo(n - 1) + fibo(n - 2);
+# }
+
+# main() {
+#     return fibo(3);
+# }
+# """ 3
+
 funcCall "main() { howdy(); }"
 
 funcCall "main() { add2(10, 11); }"

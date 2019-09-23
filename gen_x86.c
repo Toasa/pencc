@@ -4,8 +4,10 @@
 #include "gen_x86.h"
 
 char *regs[6] = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
+int labelCount = 0;
 
 void genExpr(Node *n);
+void genStmt(Node *n);
 
 int calcOffset(char c) {
     return (c - 'a' + 1) * 8;
@@ -86,6 +88,50 @@ void genExpr(Node *n) {
     }
 }
 
+void genIfStmt(Node *n) {
+    genExpr(n->cond);
+    printf("        pop rax\n");
+    printf("        cmp rax, 0\n");
+    printf("        je .L_ELSE_%03d\n", labelCount);
+    genStmt(n->cons);
+    printf("        jmp .L_IF_END_%03d\n", labelCount);
+    printf(".L_ELSE_%03d:\n", labelCount);
+    if (n->alt) {
+        genStmt(n->alt);
+    }
+    printf(".L_IF_END_%03d:\n", labelCount);
+    printf("        pop rax\n");
+    labelCount++;
+}
+
+void genWhileStmt(Node *n) {
+    printf(".L_WHILE_START_%03d:\n", labelCount);
+    genExpr(n->cond);
+    printf("        pop rax\n");
+    printf("        cmp rax, 0\n");
+    printf("        je .L_WHILE_END_%03d\n", labelCount);
+    genStmt(n->expr);
+    printf("        jmp .L_WHILE_START_%03d\n", labelCount);
+    printf(".L_WHILE_END_%03d:\n", labelCount);
+    printf("        pop rax\n");
+    labelCount++;
+}
+
+void genForStmt(Node *n) {
+    genExpr(n->init);
+    printf(".L_FOR_START_%03d:\n", labelCount);
+    genExpr(n->cond);
+    printf("        pop rax\n");
+    printf("        cmp rax, 0\n");
+    printf("        je .L_FOR_END_%03d\n", labelCount);
+    genStmt(n->expr);
+    genExpr(n->post);
+    printf("        jmp .L_FOR_START_%03d\n", labelCount);
+    printf(".L_FOR_END_%03d:\n", labelCount);
+    printf("        pop rax\n");
+    labelCount++;
+}
+
 void genStmt(Node *n) {
     if (n->type == ND_RETURN) {
         genExpr(n->expr);
@@ -94,40 +140,11 @@ void genStmt(Node *n) {
         printf("        pop rbp\n");
         printf("        ret\n");
     } else if (n->type == ND_IF) {
-        genExpr(n->cond);
-        printf("        pop rax\n");
-        printf("        cmp rax, 0\n");
-        printf("        je .L_ALT\n");
-        genStmt(n->cons);
-        printf("        jmp .L_END\n");
-        printf(".L_ALT:\n");
-        if (n->alt) {
-            genStmt(n->alt);
-        }
-        printf(".L_END:\n");
-        printf("        pop rax\n");
+        genIfStmt(n);
     } else if (n->type == ND_WHILE) {
-        printf(".L_WHILESTART:\n");
-        genExpr(n->cond);
-        printf("        pop rax\n");
-        printf("        cmp rax, 0\n");
-        printf("        je .L_ALT\n");
-        genStmt(n->expr);
-        printf("        jmp .L_WHILESTART\n");
-        printf(".L_ALT:\n");
-        printf("        pop rax\n");
+        genWhileStmt(n);
     } else if (n->type == ND_FOR) {
-        genExpr(n->init);
-        printf(".L_start:\n");
-        genExpr(n->cond);
-        printf("        pop rax\n");
-        printf("        cmp rax, 0\n");
-        printf("        je .L_end\n");
-        genStmt(n->expr);
-        genExpr(n->post);
-        printf("        jmp .L_start\n");
-        printf(".L_end:\n");
-        printf("        pop rax\n");
+        genForStmt(n);
     } else if (n->type == ND_BLOCK) {
         Node *cur = n->next;
         while (cur) {
