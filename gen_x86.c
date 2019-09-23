@@ -171,7 +171,7 @@ void genFunc(Node *func, int ident_num) {
 
     printf("        mov rsp, rbp\n");
     printf("        pop rbp\n");
-    printf("        ret\n");
+    printf("        ret\n\n");
 }
 
 void gen(FuncData **funcs) {
@@ -187,7 +187,7 @@ void genGlobalFuncs(FuncData **funcs) {
     for (i = 0; funcs[i]; i++) {
         printf(".global %s\n", funcs[i]->topLevelFunc->func);
     }
-    printf("\n\n");
+    printf("\n");
 }
 
 void genAssembly(FuncData **funcs) {

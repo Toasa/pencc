@@ -240,6 +240,21 @@ main() {
 }
 """ 60
 
+try """
+faq(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * faq(n - 1);
+}
+
+main() {
+    return faq(5);
+}
+""" 120
+
+
+
 # try """
 # fibo(n) {
 #     if (n <= 1) {
