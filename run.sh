@@ -230,6 +230,16 @@ main() {
 }
 """ 55
 
+try """
+mul3(x, y, z) {
+    return x * y * z;
+}
+
+main() {
+    return mul3(3, 4, 5);
+}
+""" 60
+
 # try """
 # fibo(n) {
 #     if (n <= 1) {
