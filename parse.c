@@ -367,7 +367,5 @@ void parseProgram() {
 FuncData **parse(Token *token_) {
     token = token_;
     parseProgram();
-    // printf("ident num: %d\n", funcs[0]->identNum);
-    // printf("%s\n", funcs[0]->topLevelFunc->func);
     return funcs;
 }

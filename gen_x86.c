@@ -145,6 +145,11 @@ void genFunc(Node *func, int ident_num) {
     printf("        mov rbp, rsp\n");
     printf("        sub rsp, %d\n", ident_num * 8);
 
+    int args_i;
+    for (args_i = 0; args_i < func->argsNum; args_i++) {
+        printf("        mov [rbp - %d], %s\n", (args_i + 1) * 8, regs[args_i]);
+    }
+
     genStmt(func->expr);
 
     printf("        mov rsp, rbp\n");
@@ -155,14 +160,23 @@ void genFunc(Node *func, int ident_num) {
 void gen(FuncData **funcs) {
     int i;
     for (i = 0; funcs[i]; i++) {
+        printf("%s:\n", funcs[i]->topLevelFunc->func);
         genFunc(funcs[i]->topLevelFunc, funcs[i]->identNum);
     }
 }
 
+void genGlobalFuncs(FuncData **funcs) {
+    int i;
+    for (i = 0; funcs[i]; i++) {
+        printf(".global %s\n", funcs[i]->topLevelFunc->func);
+    }
+    printf("\n\n");
+}
+
 void genAssembly(FuncData **funcs) {
     printf(".intel_syntax noprefix\n");
-    printf(".global main\n\n");
-    printf("main:\n");
+
+    genGlobalFuncs(funcs);
 
     gen(funcs);
 }

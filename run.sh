@@ -189,11 +189,28 @@ main() {
 }
 """ 216
 
-# funcCall "main() { howdy(); }"
+try """
+main(x, y) {
+    x = 30;
+    y = 20;
+    return x + y;
+}""" 50
 
-# funcCall "main() { add2(10, 11); }"
-# funcCall "main() { add3(10, 11, 12); }"
-# funcCall "main() { add4(10, 11, 12, 13); }"
-# funcCall "main() { add5(10, 11, 12, 13, 14); }"
+try """
+add(x, y) {
+    return x + y;
+}
+
+main() {
+    return add(20, 10);
+}
+""" 30
+
+funcCall "main() { howdy(); }"
+
+funcCall "main() { add2(10, 11); }"
+funcCall "main() { add3(10, 11, 12); }"
+funcCall "main() { add4(10, 11, 12, 13); }"
+funcCall "main() { add5(10, 11, 12, 13, 14); }"
 
 echo OK
