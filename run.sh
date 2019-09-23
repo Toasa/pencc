@@ -169,6 +169,16 @@ main() {
 
 try """
 main() {
+    x = 5;
+    for (i = x; i < 10; i = i + 1) {
+        x = x + i;
+    }
+    return x;
+}
+""" 40
+
+try """
+main() {
     {
         a = 10;
         b = 20;
@@ -205,6 +215,20 @@ main() {
     return add(20, 10);
 }
 """ 30
+
+try """
+sum(x, y) {
+    s = 0;
+    for (i = x; i <= y; i = i + 1) {
+        s = s + i;
+    }
+    return s;
+}
+
+main() {
+    return sum(1, 10);
+}
+""" 55
 
 funcCall "main() { howdy(); }"
 
