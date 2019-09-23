@@ -81,6 +81,11 @@ try "main() { a = 14; return a; }" 14
 try "main() { return 100; return 200; }" 100
 try "main() { a = 5; b = 30; return a * b; }" 150
 
+try "main() { x = 10; x += 2; return x; }" 12
+try "main() { x = 10; x -= 2; return x; }" 8
+try "main() { x = 10; x *= 2; return x; }" 20
+try "main() { x = 10; x /= 2; return x; }" 5
+
 try """
 main() {
     a = 5;

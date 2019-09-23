@@ -239,7 +239,27 @@ Node *parseAssign() {
     if (curTokenTypeIs(TK_ASSIGN)) {
         nextToken();
         lhs = newNode(ND_ASSIGN, 0, lhs, parseAssign());
-    }
+    } else if (curTokenTypeIs(TK_ADD_ASSIGN)) {
+        nextToken();
+        Node *rhs = parseEqual();
+        rhs = newNode(ND_ADD, 0, lhs, rhs);
+        lhs = newNode(ND_ASSIGN, 0, lhs, rhs);
+    } else if (curTokenTypeIs(TK_SUB_ASSIGN)) {
+        nextToken();
+        Node *rhs = parseEqual();
+        rhs = newNode(ND_SUB, 0, lhs, rhs);
+        lhs = newNode(ND_ASSIGN, 0, lhs, rhs);
+    } else if (curTokenTypeIs(TK_MUL_ASSIGN)) {
+        nextToken();
+        Node *rhs = parseEqual();
+        rhs = newNode(ND_MUL, 0, lhs, rhs);
+        lhs = newNode(ND_ASSIGN, 0, lhs, rhs);
+    } else if (curTokenTypeIs(TK_DIV_ASSIGN)) {
+        nextToken();
+        Node *rhs = parseEqual();
+        rhs = newNode(ND_DIV, 0, lhs, rhs);
+        lhs = newNode(ND_ASSIGN, 0, lhs, rhs);
+    } 
     return lhs;
 }
 

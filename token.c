@@ -1,32 +1,36 @@
 #include "util.h"
 #include "token.h"
 
-char *tokenTypes[25] = {
-    [TK_INT]       = "TK_INT",
-    [TK_ADD]       = "TK_ADD",
-    [TK_SUB]       = "TK_SUB",
-    [TK_MUL]       = "TK_MUL",
-    [TK_DIV]       = "TK_DIV",
-    [TK_LPARENT]   = "TK_LPARENT",
-    [TK_RPARENT]   = "TK_RPARENT",
-    [TK_LBRACE]    = "TK_LBRACE",
-    [TK_RBRACE]    = "TK_RBRACE",
-    [TK_EQ]        = "TK_EQ",
-    [TK_NQ]        = "TK_NQ",
-    [TK_LT]        = "TK_LT",
-    [TK_LE]        = "TK_LE",
-    [TK_GT]        = "TK_GT",
-    [TK_GE]        = "TK_GE",
-    [TK_IDENT]     = "TK_IDENT",
-    [TK_ASSIGN]    = "TK_ASSIGN",
-    [TK_IF]        = "TK_IF",
-    [TK_ELSE]      = "TK_ELSE",
-    [TK_WHILE]     = "TK_WHILE",
-    [TK_FOR]       = "TK_FOR",
-    [TK_RETURN]    = "TK_RETURN",
-    [TK_SEMICOLON] = "TK_SEMICOLON",
-    [TK_COMMA]     = "TK_COMMA",
-    [TK_EOF]       = "TK_EOF",
+char *tokenTypes[29] = {
+    [TK_INT]        = "TK_INT",
+    [TK_ADD]        = "TK_ADD",
+    [TK_SUB]        = "TK_SUB",
+    [TK_MUL]        = "TK_MUL",
+    [TK_DIV]        = "TK_DIV",
+    [TK_LPARENT]    = "TK_LPARENT",
+    [TK_RPARENT]    = "TK_RPARENT",
+    [TK_LBRACE]     = "TK_LBRACE",
+    [TK_RBRACE]     = "TK_RBRACE",
+    [TK_EQ]         = "TK_EQ",
+    [TK_NQ]         = "TK_NQ",
+    [TK_LT]         = "TK_LT",
+    [TK_LE]         = "TK_LE",
+    [TK_GT]         = "TK_GT",
+    [TK_GE]         = "TK_GE",
+    [TK_IDENT]      = "TK_IDENT",
+    [TK_ASSIGN]     = "TK_ASSIGN",
+    [TK_ADD_ASSIGN] = "TK_ADD_ASSIGN",
+    [TK_SUB_ASSIGN] = "TK_SUB_ASSIGN",
+    [TK_MUL_ASSIGN] = "TK_MUL_ASSIGN",
+    [TK_DIV_ASSIGN] = "TK_DIV_ASSIGN",
+    [TK_IF]         = "TK_IF",
+    [TK_ELSE]       = "TK_ELSE",
+    [TK_WHILE]      = "TK_WHILE",
+    [TK_FOR]        = "TK_FOR",
+    [TK_RETURN]     = "TK_RETURN",
+    [TK_SEMICOLON]  = "TK_SEMICOLON",
+    [TK_COMMA]      = "TK_COMMA",
+    [TK_EOF]        = "TK_EOF",
 };
 
 char *input;
@@ -157,13 +161,33 @@ Token *tokenize(char *input_) {
             input += len;
         } else {
             if (*input == '+') {
-                new_token = (Token *)newToken(TK_ADD, 0);
+                if (*(input+1) == '=') {
+                    new_token = newToken(TK_ADD_ASSIGN, 0);
+                    input++;
+                } else {
+                    new_token = newToken(TK_ADD, 0);
+                }
             } else if (*input == '-') {
-                new_token = newToken(TK_SUB, 0);
+                if (*(input+1) == '=') {
+                    new_token = newToken(TK_SUB_ASSIGN, 0);
+                    input++;
+                } else {
+                    new_token = newToken(TK_SUB, 0);
+                }
             } else if (*input == '*') {
-                new_token = newToken(TK_MUL, 0);
+                if (*(input+1) == '=') {
+                    new_token = newToken(TK_MUL_ASSIGN, 0);
+                    input++;
+                } else {
+                    new_token = newToken(TK_MUL, 0);
+                }
             } else if (*input == '/') {
-                new_token = newToken(TK_DIV, 0);
+                if (*(input+1) == '=') {
+                    new_token = newToken(TK_DIV_ASSIGN, 0);
+                    input++;
+                } else {                    
+                    new_token = newToken(TK_DIV, 0);
+                }
             } else if (*input == '(') {
                 new_token = newToken(TK_LPARENT, 0);
             } else if (*input == ')') {
