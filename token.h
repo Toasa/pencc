@@ -30,6 +30,9 @@ typedef enum enm_tk {
     TK_DIV_ASSIGN, // /=
     TK_REM_ASSIGN, // %=
 
+    TK_INC,        // ++
+    TK_DEC,        // --
+
     TK_IF,         // if
     TK_ELSE,       // else
     TK_WHILE,      // while
@@ -42,7 +45,7 @@ typedef enum enm_tk {
     TK_EOF,
 } TokenType;
 
-char *tokenTypes[33];
+char *tokenTypes[35];
 
 typedef struct Token {
     TokenType type;

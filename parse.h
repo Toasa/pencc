@@ -1,30 +1,35 @@
 typedef enum enm_nd {
-    ND_INT,    // 46, 101, ...
+    ND_INT,     // 46, 101, ...
 
-    ND_ADD,    // +
-    ND_SUB,    // -
-    ND_MUL,    // *
-    ND_DIV,    // /
-    ND_REM,    // %
-    ND_LSHIFT, // >>
-    ND_RSHIFT, // <<
+    ND_ADD,     // +
+    ND_SUB,     // -
+    ND_MUL,     // *
+    ND_DIV,     // /
+    ND_REM,     // %
+    ND_LSHIFT,  // >>
+    ND_RSHIFT,  // <<
 
-    ND_EQ,     // ==
-    ND_NQ,     // !=
-    ND_LT,     // <
-    ND_LE,     // <=
+    ND_EQ,      // ==
+    ND_NQ,      // !=
+    ND_LT,      // <
+    ND_LE,      // <=
 
-    ND_IDENT,  // a, foo, ...
-    ND_IF,     // if
-    ND_WHILE,  // while
-    ND_FOR,    // for
-    ND_RETURN, // return
-    ND_BLOCK,  // {...; ...; ...;}
+    ND_PREINC,  // ++x
+    ND_PREDEC,  // --x
+    ND_POSTINC, // x++
+    ND_POSTDEC, // x--
 
-    ND_FUNC,   // foo() { ...; } (function literal)
-    ND_CALL,   // foo() (function call)
+    ND_IDENT,   // a, foo, ...
+    ND_IF,      // if
+    ND_WHILE,   // while
+    ND_FOR,     // for
+    ND_RETURN,  // return
+    ND_BLOCK,   // {...; ...; ...;}
 
-    ND_ASSIGN, // =
+    ND_FUNC,    // foo() { ...; } (function literal)
+    ND_CALL,    // foo() (function call)
+
+    ND_ASSIGN,  // =
 } NodeType;
 
 typedef struct Node {

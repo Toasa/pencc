@@ -95,6 +95,18 @@ try "main() { x = 10; x *= 2; return x; }" 20
 try "main() { x = 10; x /= 2; return x; }" 5
 try "main() { x = 10; x %= 2; return x; }" 0
 
+try "main() { x = 10; ++x; return x; }" 11
+try "main() { x = 10; --x; return x; }" 9
+try "main() { x = 10; y = ++x; return y; }" 11
+try "main() { x = 10; y = --x; return y; }" 9
+try "main() { x = 10; y = ++x; return x - y; }" 0
+
+try "main() { x = 10; x++; return x; }" 11
+try "main() { x = 10; x--; return x; }" 9
+try "main() { x = 10; y = x++; return y; }" 10
+try "main() { x = 10; y = x--; return y; }" 10
+try "main() { x = 10; y = x++; return x - y; }" 1
+
 try """
 main() {
     a = 5;
@@ -203,15 +215,26 @@ main() {
 
 try """
 main() {
-    i = 1;
-    j = 1;
-    while (i * j < 100) {
-        i = i * 2;
-        j = j * 3;
+    i = 2;
+    j = 40;
+    while (i < 20) {
+        i *= 2;
     }
-    return i * j;
+    return j - i;
 }
-""" 216
+""" 8
+
+# try """
+# main() {
+#     i = 1;
+#     j = 1;
+#     while (i * j < 100) {
+#         i = i * 2;
+#         j = j * 3;
+#     }
+#     return i * j;
+# }
+# """ 216
 
 try """
 main(x, y) {
@@ -235,6 +258,20 @@ sum(x, y) {
     s = 0;
     for (i = x; i <= y; i = i + 1) {
         s = s + i;
+    }
+    return s;
+}
+
+main() {
+    return sum(1, 10);
+}
+""" 55
+
+try """
+sum(x, y) {
+    s = 0;
+    for (i = x; i <= y; i++) {
+        s += i;
     }
     return s;
 }

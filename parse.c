@@ -147,6 +147,14 @@ Node *parseNum() {
             // function call
             n = parseFunctionName(n, ND_CALL);
             parseFunctionArgs(n);
+        } else if (nextTokenTypeIs(TK_INC)) {
+            n = parseIdent();
+            eatToken(TK_INC);
+            n = newNode(ND_POSTINC, 0, n, newIntNode(1));
+        } else if (nextTokenTypeIs(TK_DEC)) {
+            n = parseIdent();
+            eatToken(TK_DEC);
+            n = newNode(ND_POSTDEC, 0, n, newIntNode(1));
         } else {
             // identifier
             n = parseIdent();
@@ -157,16 +165,31 @@ Node *parseNum() {
 }
 
 Node *parseUnary() {
+    // 単項の-
     if (curTokenTypeIs(TK_SUB)) {
         eatToken(TK_SUB);
         Node *zero = newIntNode(0);
         Node *n = newNode(ND_SUB, 0, zero, parseNum());
         return n;
     }
- 
+
+    // ++x;
+    if (curTokenTypeIs(TK_INC)) {
+        nextToken();
+        Node *n = newNode(ND_PREINC, 0, parseIdent(), newIntNode(1));
+        return n;
+    // --x;
+    } else if (curTokenTypeIs(TK_DEC)) {
+        nextToken();
+        Node *n = newNode(ND_PREDEC, 0, parseIdent(), newIntNode(1));
+        return n;
+    } 
+
+    // 単項の+
     if (curTokenTypeIs(TK_ADD)) {
         nextToken();
     }
+
     return parseNum();
 }
 

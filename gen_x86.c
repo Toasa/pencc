@@ -27,6 +27,11 @@ void genAssign(Node *n) {
 }
 
 void genExpr(Node *n) {
+    if (n->type == ND_ASSIGN) {
+        genAssign(n);
+        return;
+    }
+
     if (n->lhs) { 
         genExpr(n->lhs);
     }
@@ -38,8 +43,6 @@ void genExpr(Node *n) {
         printf("        push %d\n", n->val);
     } else if (n->type == ND_IDENT) {
         genIdent(n);
-    } else if (n->type == ND_ASSIGN) {
-        genAssign(n);
     } else if (n->type == ND_CALL) {
         int i = 0;
         Node *cur = n->next;
@@ -96,6 +99,28 @@ void genExpr(Node *n) {
             printf("        cmp rax, rdi\n");
             printf("        setle al\n");
             printf("        movzb rax, al\n");
+        } else if (n->type == ND_PREINC) {
+            int offset = n->lhs->offset;
+            printf("        add rax, rdi\n");
+            printf("        mov [rbp - %d], rax\n", offset);
+            printf("        mov rax, [rbp - %d]\n", offset);
+        } else if (n->type == ND_PREDEC) {
+            int offset = n->lhs->offset;
+            printf("        sub rax, rdi\n");
+            printf("        mov [rbp - %d], rax\n", offset);
+            printf("        mov rax, [rbp - %d]\n", offset);     
+        } else if (n->type == ND_POSTINC) {
+            int offset = n->lhs->offset;
+            printf("        mov rdx, rax\n");
+            printf("        add rax, rdi\n");
+            printf("        mov [rbp - %d], rax\n", offset);
+            printf("        mov rax, rdx\n");     
+        } else if (n->type == ND_POSTDEC) {
+            int offset = n->lhs->offset;
+            printf("        mov rdx, rax\n");
+            printf("        sub rax, rdi\n");
+            printf("        mov [rbp - %d], rax\n", offset);
+            printf("        mov rax, rdx\n");     
         }
         printf("        push rax\n");
     }
