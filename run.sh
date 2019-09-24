@@ -317,6 +317,23 @@ main() {
 }
 """ 55
 
+try """
+main() {
+    x = 3;
+    y = &x;
+    return *y;
+}
+""" 3
+
+try """
+main() {
+    x = 3;
+    y = 4;
+    z = &y + 8;
+    return *z;
+}
+""" 3
+
 funcCall "main() { howdy(); }"
 
 funcCall "main() { add2(10, 11); }"

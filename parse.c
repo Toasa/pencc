@@ -183,7 +183,21 @@ Node *parseUnary() {
         nextToken();
         Node *n = newNode(ND_PREDEC, 0, parseIdent(), newIntNode(1));
         return n;
-    } 
+    }
+
+    // * (pointer dereference)
+    if (curTokenTypeIs(TK_MUL)) {
+        nextToken();
+        Node *n = newNode(ND_DEREF, 0, parseUnary(), NULL);
+        return n;
+    }
+
+    // & (address)
+    if (curTokenTypeIs(TK_BAND)) {
+        nextToken();
+        Node *n = newNode(ND_ADDR, 0, parseUnary(), NULL);
+        return n;
+    }
 
     // 単項の+
     if (curTokenTypeIs(TK_ADD)) {

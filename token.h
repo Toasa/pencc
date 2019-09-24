@@ -8,6 +8,7 @@ typedef enum enm_tk {
     TK_REM,        // %
     TK_LSHIFT,     // <<
     TK_RSHIFT,     // >>
+    TK_BAND,       // &
 
     TK_LPARENT,    // (
     TK_RPARENT,    // )
@@ -45,7 +46,7 @@ typedef enum enm_tk {
     TK_EOF,
 } TokenType;
 
-char *tokenTypes[35];
+char *tokenTypes[36];
 
 typedef struct Token {
     TokenType type;

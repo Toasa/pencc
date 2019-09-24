@@ -30,6 +30,17 @@ void genExpr(Node *n) {
     if (n->type == ND_ASSIGN) {
         genAssign(n);
         return;
+    } else if (n->type == ND_ADDR) {
+        printf("        mov rax, rbp\n");
+        printf("        sub rax, %d\n", n->lhs->offset);
+        printf("        push rax\n");
+        return;
+    } else if (n->type == ND_DEREF) {
+        genExpr(n->lhs);
+        printf("        pop rax\n");
+        printf("        mov rax, [rax]\n");
+        printf("        push rax\n");
+        return;
     }
 
     if (n->lhs) { 

@@ -14,6 +14,11 @@ typedef enum enm_nd {
     ND_LT,      // <
     ND_LE,      // <=
 
+    ND_ADDR,    // &
+    ND_DEREF,   // *
+
+    ND_ASSIGN,  // =
+
     ND_PREINC,  // ++x
     ND_PREDEC,  // --x
     ND_POSTINC, // x++
@@ -28,8 +33,6 @@ typedef enum enm_nd {
 
     ND_FUNC,    // foo() { ...; } (function literal)
     ND_CALL,    // foo() (function call)
-
-    ND_ASSIGN,  // =
 } NodeType;
 
 typedef struct Node {
